@@ -3,10 +3,10 @@ import React from 'react'
 
 // @ts-ignore
 export default function Home({navigation}) {
-  return (
-    <View>
-      <Text>Bonjour Hugo</Text>
-        <Button title="Déconnecter" onPress={() => navigation.popToTop()}/>
-    </View>
-  )
+    return (
+        <View>
+            <Text>Bonjour Hugo</Text>
+            <Button title="Déconnecter" onPress={() => navigation.popToTop()}/>
+        </View>
+    )
 }
