@@ -3,7 +3,6 @@ import {Text, Button, TextInput} from 'react-native-paper'
 import React from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
-import AnimatedView from "react-native-reanimated/lib/types/lib/reanimated2/component/View";
 
 // @ts-ignore
 export default function SignUp({navigation}) {
@@ -30,8 +29,7 @@ export default function SignUp({navigation}) {
             gap: 40,
             alignItems: 'center',
         },
-        input: {
-        },
+        input: {},
         connection: {
             width: '70%'
         },
@@ -54,19 +52,25 @@ export default function SignUp({navigation}) {
             <View style={styles.container}>
                 <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page de connexion</Animated.Text>
                 <View style={styles.rounded}>
-                    <Controller rules={{required: true}}
+                    <Controller rules={{
+                        required: true,
+                        pattern: {value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide'}
+                    }}
                                 control={control}
                                 render={({field: {onChange, onBlur, value}}) => (
                                     <TextInput
+                                        keyboardType={'email-address'}
                                         style={styles.input}
                                         placeholder="Adresse mail"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
                                         value={value}
+                                        multiline={true}
+                                        autoComplete={'email'}
+                                        inputMode={'email'}
                                     />
                                 )} name="mail"/>
                 </View>
-                {errors.mail && <Text>Le mail est obligatoire pour se connecter</Text>}
                 <View style={styles.rounded}>
                     <Controller rules={{required: true}}
                                 name="password"
@@ -81,7 +85,7 @@ export default function SignUp({navigation}) {
                                         secureTextEntry={true}/>
                                 )}/>
                 </View>
-                {errors.password && <Text>Le mot de passe est obligatoire pour se connecter</Text>}
+                {(errors.password || errors.mail) && <Text>Champs obligatoires invalide</Text>}
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
             </View>
