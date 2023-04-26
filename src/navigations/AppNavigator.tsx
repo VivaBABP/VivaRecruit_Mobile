@@ -10,7 +10,7 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
         <Stack.Navigator>
-            <Stack.Screen name='Tab' component={TabNavigator} />
+            <Stack.Screen name='Tab' component={TabNavigator} options={{headerShown:false}} />
         </Stack.Navigator>
     </NavigationContainer>
   )
