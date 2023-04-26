@@ -1,10 +1,12 @@
-import { View, Text } from 'react-native'
+import {View, Text, Button} from 'react-native'
 import React from 'react'
 
-export default function Home() {
-  return (
-    <View>
-      <Text>Bonjour Hugo</Text>
-    </View>
-  )
+// @ts-ignore
+export default function Home({navigation}) {
+    return (
+        <View>
+            <Text>Bonjour Hugo</Text>
+            <Button title="Déconnecter" onPress={() => navigation.popToTop()}/>
+        </View>
+    )
 }
