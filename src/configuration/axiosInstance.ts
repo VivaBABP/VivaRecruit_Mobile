@@ -33,11 +33,16 @@ axiosApiInstance.interceptors.response.use((response) => {
         'Content-Type': 'application/json'
       }
     })
-    const access_token = await new AuthClient(URL, refreshInstance).refresh();
-    await SecureStore.setItemAsync("token", access_token.access_token)
-    await SecureStore.setItemAsync("refreshToken", access_token.refresh_token)
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
-    return axiosApiInstance(originalRequest);
+    try {
+      const access_token = await new AuthClient(URL, refreshInstance).refresh();
+      await SecureStore.setItemAsync("token", access_token.access_token)
+      await SecureStore.setItemAsync("refreshToken", access_token.refresh_token)
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
+      return axiosApiInstance(originalRequest);
+    } catch (error) {
+      await SecureStore.deleteItemAsync("token");
+      await SecureStore.deleteItemAsync("refreshToken");
+    }
   }
   return Promise.reject(error);
 });

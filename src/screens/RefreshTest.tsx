@@ -9,6 +9,7 @@ export default function RefreshTest() {
   const authService = new AuthService;
 
   async function getJwt(): Promise<void> {
+    // mettre vos login à la maint
     const login = new CredentialDTO({
       email: 'test@test.fr',
       password: '123'
