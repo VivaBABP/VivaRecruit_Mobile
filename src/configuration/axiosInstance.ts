@@ -9,7 +9,7 @@ const axiosApiInstance = axios.create();
 axiosApiInstance.interceptors.request.use(
   async config => {
     const token = await SecureStore.getItemAsync("token") as string;
-    config.headers = { 
+    config.headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     } as any
@@ -17,7 +17,7 @@ axiosApiInstance.interceptors.request.use(
   },
   error => {
     Promise.reject(error)
-});
+  });
 
 // Response interceptor for API calls
 axiosApiInstance.interceptors.response.use((response) => {

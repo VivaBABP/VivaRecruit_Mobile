@@ -6,7 +6,7 @@ export class AuthService {
   private authClient = new AuthClient(URL)
 
   signIn(credential: CredentialDTO): Promise<TokenDTO> {
-    return this.authClient.signIn(credential); 
+    return this.authClient.signIn(credential);
   }
 
   signUp(createUser: CreateUserDTO): Promise<TokenDTO> {
