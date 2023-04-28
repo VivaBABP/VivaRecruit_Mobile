@@ -80,7 +80,7 @@ export class AuthClient {
         return Promise.resolve<TokenDTO>(null as any);
     }
 
-    refresh(  cancelToken?: CancelToken | undefined): Promise<void> {
+    refresh(  cancelToken?: CancelToken | undefined): Promise<TokenDTO> {
         let url_ = this.baseUrl + "/auth/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -88,6 +88,7 @@ export class AuthClient {
             method: "POST",
             url: url_,
             headers: {
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -103,7 +104,7 @@ export class AuthClient {
         });
     }
 
-    protected processRefresh(response: AxiosResponse): Promise<void> {
+    protected processRefresh(response: AxiosResponse): Promise<TokenDTO> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -113,15 +114,26 @@ export class AuthClient {
                 }
             }
         }
-        if (status === 201) {
+        if (status === 200) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = TokenDTO.fromJS(resultData200);
+            return Promise.resolve<TokenDTO>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<TokenDTO>(null as any);
     }
 
     test(  cancelToken?: CancelToken | undefined): Promise<string> {
