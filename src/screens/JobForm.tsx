@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
@@ -25,7 +25,7 @@ export default function JobForm() {
   console.log('errors', errors);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.label}>Intitulé du poste:</Text>
       <Controller
         control={control}
@@ -49,6 +49,7 @@ export default function JobForm() {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            multiline
           />
         )}
         name="jobDescription"
@@ -64,6 +65,7 @@ export default function JobForm() {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            multiline
           />
         )}
         name="skillsNeeded"
@@ -80,14 +82,12 @@ export default function JobForm() {
             })
           }}
         >Reset</Button>
-      </View>
-
-      <View style={styles.button}>
+  
         <Button
           onPress={handleSubmit(onSubmit)}
         >Valider</Button>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -98,7 +98,8 @@ export default function JobForm() {
       marginLeft: 0,
     },
     button: {
-      marginTop: 40,
+      marginTop: 20,
+      marginBottom: 70,
       color: 'white',
       height: 40,
       backgroundColor: 'White',
@@ -106,7 +107,6 @@ export default function JobForm() {
     },
     container: {
       flex: 1,
-      justifyContent: 'center',
       paddingTop: Constants.statusBarHeight,
       padding: 8,
       backgroundColor: 'White',
@@ -115,7 +115,6 @@ export default function JobForm() {
       backgroundColor: 'white',
       borderColor: '#000000',
       borderBottomWidth: 2,
-      height: 40,
       padding: 10,
       borderRadius: 4,
     },
