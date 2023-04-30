@@ -1,7 +1,9 @@
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
+import { Button, TextInput} from 'react-native-paper'
+
 
 export default function ContactForm() {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -55,21 +57,19 @@ export default function ContactForm() {
 
       <View style={styles.button}>
         <Button
-          title="Reset"
           onPress={() => {
             reset({
-              phoneNumber: '0102030405',
-              lastDiploma: 'Baccalauréat'
+              phoneNumber: '',
+              lastDiploma: ''
             })
           }}
-        />
+        >Reset</Button>
       </View>
 
       <View style={styles.button}>
         <Button
-          title="Valider"
           onPress={handleSubmit(onSubmit)}
-        />
+        >Valider</Button>
       </View>
     </View>
   )

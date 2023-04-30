@@ -1,7 +1,8 @@
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
+import { Button, TextInput} from 'react-native-paper'
 
 export default function JobForm() {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -71,7 +72,6 @@ export default function JobForm() {
 
       <View style={styles.button}>
         <Button
-          title="Reset"
           onPress={() => {
             reset({
               jobName: '',
@@ -79,14 +79,13 @@ export default function JobForm() {
               skillsNeeded: ''
             })
           }}
-        />
+        >Reset</Button>
       </View>
 
       <View style={styles.button}>
         <Button
-          title="Valider"
           onPress={handleSubmit(onSubmit)}
-        />
+        >Valider</Button>
       </View>
     </View>
   )
