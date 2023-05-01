@@ -3,9 +3,10 @@ import {Text, Button, TextInput} from 'react-native-paper'
 import React from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
+import * as SQLite from 'expo-sqlite'
 
 // @ts-ignore
-export default function SignUp({navigation}) {
+export default function SignIn({navigation}) {
     const {
         control,
         handleSubmit,
@@ -17,6 +18,54 @@ export default function SignUp({navigation}) {
         }
     })
 
+
+    const db = SQLite.openDatabase(
+        'test.db'
+    )
+    console.log(db);
+
+
+    const createTables = async () => {
+        await db.transaction(async (tx) => {
+            await tx.executeSql('CREATE TABLE IF NOT EXISTS cv (id INTEGER PRIMARY KEY AUTOINCREMENT , cv BLOB)', [],
+                (transaction, resultSet) => {
+                    console.log("Succes table cv :",resultSet)
+                }, (transaction, error) => {
+                console.log(error)
+                })
+        })
+        await db.transaction(async (tx) => {
+            // @ts-ignore
+            await tx.executeSql('CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT , mail TEXT, password TEXT)', [],
+                (transaction, resultSet) => {
+                    console.log("Succes table user : ",resultSet)
+                }, (transaction, error) => {
+                console.log(error);
+                })
+        })
+    }
+
+    const insterUser = async (data: { mail: string, password: string }) => {
+        await db.transaction(async (tx) => {
+            await tx.executeSql('INSERT INTO user(mail,password) VALUES (?1, ?2)', [data.mail, data.password], (transaction, resultSet) => {
+                console.log("MA CREATION DE USER : ",resultSet)
+            }, (transaction, error) => {
+                console.log("Mon erreur : ",error)
+            })
+        })
+        await db.transaction(async (tx) => {
+            await tx.executeSql('SELECT * from user',[], (transaction, resultSet) => {
+                console.log("Mes données sql : ",resultSet);
+            }, (transaction, error) => {
+                console.log("Mon erreur fetch données : ", error)
+            })
+        })
+    }
+
+    const dbStuff = (data: { mail: string, password: string }) => {
+        createTables();
+        insterUser(data);
+    }
 
     const onSubmit = (data: { mail: string, password: string }) => {
         navigation.navigate("Tab");
@@ -86,7 +135,7 @@ export default function SignUp({navigation}) {
                                 )}/>
                 </View>
                 {(errors.password || errors.mail) && <Text>Champs obligatoires invalide</Text>}
-                <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
+                <Button style={styles.connection} onPress={handleSubmit(dbStuff)} mode='contained'>Se
                     connecter</Button>
             </View>
         </ImageBackground>
