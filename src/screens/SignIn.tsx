@@ -30,8 +30,7 @@ export default function SignIn({navigation}) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS cv (id INTEGER PRIMARY KEY AUTOINCREMENT , cv BLOB)', [],
                 (transaction, resultSet) => {
                     console.log("Succes table cv :", resultSet);
-                }, (transaction, error) => {
-                    console.log(error);
+
                 });
         })
         db.transaction( (tx) => {
@@ -39,8 +38,6 @@ export default function SignIn({navigation}) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT , mail TEXT, password TEXT)', [],
                 (transaction, resultSet) => {
                     console.log("Succes table user : ", resultSet);
-                }, (transaction, error) => {
-                    console.log(error);
                 });
         })
     }
@@ -49,15 +46,11 @@ export default function SignIn({navigation}) {
         db.transaction( (tx) => {
             tx.executeSql('INSERT INTO user(mail,password) VALUES (?1, ?2)', [data.mail, data.password], (transaction, resultSet) => {
                 console.log("MA CREATION DE USER : ", resultSet);
-            }, (transaction, error) => {
-                console.log("Mon erreur : ", error);
             });
         })
         db.transaction( (tx) => {
              tx.executeSql('SELECT * from user', [], (transaction, resultSet) => {
                 console.log("Mes données sql : ", resultSet);
-            }, (transaction, error) => {
-                console.log("Mon erreur fetch données : ", error);
             });
         })
     }
