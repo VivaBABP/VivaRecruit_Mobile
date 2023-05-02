@@ -1,6 +1,6 @@
 import {ImageBackground, StyleSheet, View} from 'react-native'
 import {Text, Button, TextInput} from 'react-native-paper'
-import React from 'react'
+import React, {useState} from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
 import * as SQLite from 'expo-sqlite'
@@ -17,6 +17,7 @@ export default function SignIn({navigation}) {
             password: ''
         }
     })
+
 
 
     const db = SQLite.openDatabase(
@@ -47,12 +48,12 @@ export default function SignIn({navigation}) {
             tx.executeSql('INSERT INTO user(mail,password) VALUES (?1, ?2)', [data.mail, data.password], (transaction, resultSet) => {
                 console.log("MA CREATION DE USER : ", resultSet);
             });
-        })
-        db.transaction( (tx) => {
-             tx.executeSql('SELECT * from user', [], (transaction, resultSet) => {
-                console.log("Mes données sql : ", resultSet);
-            });
-        })
+            db.transaction((tx) => {
+                tx.executeSql('SELECT * from user', [], (transaction, resultSet) => {
+                    console.log("Mes données sql : ", resultSet);
+                });
+            })
+        });
     }
 
     const dbStuff = (data: { mail: string, password: string }) => {
