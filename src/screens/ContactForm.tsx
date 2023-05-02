@@ -1,75 +1,98 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
 import { Button, TextInput} from 'react-native-paper'
+import * as SQLite from 'expo-sqlite'
+import { FlatList } from 'react-native'
 
 
 export default function ContactForm() {
-  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
+  const db = SQLite.openDatabase('contact.db');
+  const [ info, setInfo ] = useState([] as any[]);
+  const [ phoneNumber, setPhoneNumber ] = useState('');
+  const [ diploma, setDiploma ] = useState('');
+
+
+  useEffect(() => {
+    db.transaction(tx => {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT,  phoneNumber INTEGER, diploma TEXT)')
+    });
+
+    getInfo();
+
+  }, []);
+
+  const getInfo = () => {
+    db.transaction(txn => txn.executeSql('SELECT * FROM info', [],
+      (sqlTxn: SQLite.SQLTransaction, res: SQLite.SQLResultSet) => {
+        let len = res.rows.length;
+
+        if( len > 0) {
+          let results = [];
+
+          for(let i = 0; i < len; i++) {
+            let item = res.rows.item(i);
+            console.log("Results : ", results)
+            results.push({id: item.id, phoneNumber: item.phoneNumber})
+          }
+          setInfo(results);
+        }
+      }
+    ));
+  }
+
+  const renderInfo = ({item}) => {
+    return (
+      <View>
+        <Text>
+          {item.id} - {item.phoneNumber}
+        </Text>
+      </View>
+    )
+  }
+  
+
+  const { handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       phoneNumber: '',
       lastDiploma: ''
     }
   });
-  const onSubmit = (data: any) => {
+
+  const onSubmit = (data: {phoneNumber : string, lastDiploma : string}) => {
     console.log(data);
+
+    getInfo();
   };
 
-  const onChange = (arg: { nativeEvent: { text: any; }; }) => {
-    return {
-      value: arg.nativeEvent.text,
-    };
-  };
 
   console.log('errors', errors);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.label}>Numéro de téléphone</Text>
-      <Controller
-        control={control}
-        render={({field: { onChange, onBlur, value }}) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="phoneNumber"
-        rules={{ required: true }}
-      />
-      <Text style={styles.label}>Dernier diplôme obtenu</Text>
-      <Controller
-        control={control}
-        render={({field: { onChange, onBlur, value }}) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="lastDiploma"
-        rules={{ required: true }}
-      />
-
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setPhoneNumber}
+          value={phoneNumber}
+        />
+      </View>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setDiploma}
+          value={diploma}
+        />
+      </View>
       <View style={styles.button}>
-        <Button
-          onPress={() => {
-            reset({
-              phoneNumber: '',
-              lastDiploma: ''
-            })
-          }}
-        >Reset</Button>
-
         <Button
           onPress={handleSubmit(onSubmit)}
         >Valider</Button>
       </View>
-    </ScrollView>
+      <FlatList data={info} renderItem={renderInfo}></FlatList>
+    </View>
   )
 }
 
@@ -89,7 +112,6 @@ export default function ContactForm() {
     },
     container: {
       flex: 1,
-     
       paddingTop: Constants.statusBarHeight,
       padding: 8,
       backgroundColor: 'White',
