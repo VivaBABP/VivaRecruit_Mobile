@@ -1,7 +1,7 @@
-import {View, Text} from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './TabNavigator';
 import SignIn from "../screens/SignIn";
 import Home from "../screens/Home";
