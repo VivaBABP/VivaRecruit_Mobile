@@ -25,46 +25,47 @@ export default function SignIn({navigation}) {
     console.log(db);
 
 
-    const createTables = async () => {
-        await db.transaction(async (tx) => {
-            await tx.executeSql('CREATE TABLE IF NOT EXISTS cv (id INTEGER PRIMARY KEY AUTOINCREMENT , cv BLOB)', [],
+    const createTables =  () => {
+        db.transaction( (tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS cv (id INTEGER PRIMARY KEY AUTOINCREMENT , cv BLOB)', [],
                 (transaction, resultSet) => {
-                    console.log("Succes table cv :",resultSet)
+                    console.log("Succes table cv :", resultSet);
                 }, (transaction, error) => {
-                console.log(error)
-                })
+                    console.log(error);
+                });
         })
-        await db.transaction(async (tx) => {
+        db.transaction( (tx) => {
             // @ts-ignore
-            await tx.executeSql('CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT , mail TEXT, password TEXT)', [],
+            tx.executeSql('CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT , mail TEXT, password TEXT)', [],
                 (transaction, resultSet) => {
-                    console.log("Succes table user : ",resultSet)
+                    console.log("Succes table user : ", resultSet);
                 }, (transaction, error) => {
-                console.log(error);
-                })
+                    console.log(error);
+                });
         })
     }
 
-    const insterUser = async (data: { mail: string, password: string }) => {
-        await db.transaction(async (tx) => {
-            await tx.executeSql('INSERT INTO user(mail,password) VALUES (?1, ?2)', [data.mail, data.password], (transaction, resultSet) => {
-                console.log("MA CREATION DE USER : ",resultSet)
+    const insterUser = (data: { mail: string, password: string }) => {
+        db.transaction( (tx) => {
+            tx.executeSql('INSERT INTO user(mail,password) VALUES (?1, ?2)', [data.mail, data.password], (transaction, resultSet) => {
+                console.log("MA CREATION DE USER : ", resultSet);
             }, (transaction, error) => {
-                console.log("Mon erreur : ",error)
-            })
+                console.log("Mon erreur : ", error);
+            });
         })
-        await db.transaction(async (tx) => {
-            await tx.executeSql('SELECT * from user',[], (transaction, resultSet) => {
-                console.log("Mes données sql : ",resultSet);
+        db.transaction( (tx) => {
+             tx.executeSql('SELECT * from user', [], (transaction, resultSet) => {
+                console.log("Mes données sql : ", resultSet);
             }, (transaction, error) => {
-                console.log("Mon erreur fetch données : ", error)
-            })
+                console.log("Mon erreur fetch données : ", error);
+            });
         })
     }
 
     const dbStuff = (data: { mail: string, password: string }) => {
         createTables();
         insterUser(data);
+        onSubmit(data);
     }
 
     const onSubmit = (data: { mail: string, password: string }) => {
