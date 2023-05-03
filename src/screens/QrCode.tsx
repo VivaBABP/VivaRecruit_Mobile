@@ -20,7 +20,6 @@ export default function QrCode({}) {
     }, []);
 
     const handleBarCodeScanned = ({type, data}) => {
-        console.log("eh beh");
         setScanned(true);
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
