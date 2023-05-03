@@ -23,18 +23,26 @@ export default function ContactForm() {
 
   }, []);
 
+  const setInfoDb = () => {
+    db.transaction(tx => {
+      tx.executeSql('INSERT INTO info(phoneNumber,diploma) VALUES(?1 , ?2)', [phoneNumber,diploma], (transaction, resultSet) => {
+        console.log(resultSet.rowsAffected)
+      })
+    });
+  }
+
   const getInfo = () => {
     db.transaction(txn => txn.executeSql('SELECT * FROM info', [],
       (sqlTxn: SQLite.SQLTransaction, res: SQLite.SQLResultSet) => {
         let len = res.rows.length;
-
+        console.log(len)
         if( len > 0) {
           let results = [];
 
           for(let i = 0; i < len; i++) {
             let item = res.rows.item(i);
-            console.log("Results : ", results)
-            results.push({id: item.id, phoneNumber: item.phoneNumber})
+            console.log("Result n°",i,": ", item);
+            results.push({id: item.id, phoneNumber: item.phoneNumber, diploma: item.diploma})
           }
           setInfo(results);
         }
@@ -61,8 +69,8 @@ export default function ContactForm() {
   });
 
   const onSubmit = (data: {phoneNumber : string, lastDiploma : string}) => {
-    console.log(data);
-
+    console.log("diplome",diploma,", phone number", phoneNumber);
+    setInfoDb();
     getInfo();
   };
 
