@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, {useState, useEffect} from 'react';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {BarCodeScanner} from 'expo-barcode-scanner';
+import {Button, TextInput} from 'react-native-paper'
+import {createTableInfoUser, insertInfoUser} from "../services/database/Database";
+import {Controller, useForm} from "react-hook-form";
 
 export default function QrCode({}) {
     const [hasPermission, setHasPermission] = useState('');
     const [scanned, setScanned] = useState(false);
-
+    const [read, setRead] = useState(false);
     useEffect(() => {
+
         const getBarCodeScannerPermissions = async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            const {status} = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === 'granted');
         };
-
+        createTableInfoUser();
         getBarCodeScannerPermissions();
     }, []);
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarCodeScanned = ({type, data}) => {
         console.log("eh beh");
         setScanned(true);
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
@@ -29,12 +33,13 @@ export default function QrCode({}) {
     }
 
     const styles = StyleSheet.create({
-        container:{
-            flex:1,
-            flexDirection:'column',
-            justifyContent:'center'
+        container: {
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center'
         }
     })
+
 
     return (
         <View style={styles.container}>
@@ -42,7 +47,9 @@ export default function QrCode({}) {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
-            {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+            {scanned && <Button onPress={() => setScanned(false)}>Tap to Scan Again</Button>}
         </View>
     );
+
+
 }

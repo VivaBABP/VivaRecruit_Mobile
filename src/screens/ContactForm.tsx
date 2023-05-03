@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
 import { Button, TextInput} from 'react-native-paper'
+import {createTableInfo} from "../services/database/Database";
 
 
 export default function ContactForm() {
@@ -12,6 +13,11 @@ export default function ContactForm() {
       lastDiploma: ''
     }
   });
+
+  useEffect(() =>{
+    createTableInfo();
+  })
+
   const onSubmit = (data: any) => {
     console.log(data);
   };
@@ -25,51 +31,51 @@ export default function ContactForm() {
   console.log('errors', errors);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.label}>Numéro de téléphone</Text>
-      <Controller
-        control={control}
-        render={({field: { onChange, onBlur, value }}) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="phoneNumber"
-        rules={{ required: true }}
-      />
-      <Text style={styles.label}>Dernier diplôme obtenu</Text>
-      <Controller
-        control={control}
-        render={({field: { onChange, onBlur, value }}) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="lastDiploma"
-        rules={{ required: true }}
-      />
+      <ScrollView style={styles.container}>
+        <Text style={styles.label}>Numéro de téléphone</Text>
+        <Controller
+            control={control}
+            render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                />
+            )}
+            name="phoneNumber"
+            rules={{ required: true }}
+        />
+        <Text style={styles.label}>Dernier diplôme obtenu</Text>
+        <Controller
+            control={control}
+            render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+                />
+            )}
+            name="lastDiploma"
+            rules={{ required: true }}
+        />
 
-      <View style={styles.button}>
-        <Button
-          onPress={() => {
-            reset({
-              phoneNumber: '',
-              lastDiploma: ''
-            })
-          }}
-        >Reset</Button>
+        <View style={styles.button}>
+          <Button
+              onPress={() => {
+                reset({
+                  phoneNumber: '',
+                  lastDiploma: ''
+                })
+              }}
+          >Reset</Button>
 
-        <Button
-          onPress={handleSubmit(onSubmit)}
-        >Valider</Button>
-      </View>
-    </ScrollView>
+          <Button
+              onPress={handleSubmit(onSubmit)}
+          >Valider</Button>
+        </View>
+      </ScrollView>
   )
 }
 
