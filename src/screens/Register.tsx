@@ -88,8 +88,6 @@ export default function SignUp({navigation}) {
                 {(errors.password || errors.mail) && <Text>Champs obligatoires invalide</Text>}
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
-                <Button style={styles.connection} onPress={() => navigation.navigate("Register")} >S'inscrire
-                    </Button>
             </View>
         </ImageBackground>
     )
