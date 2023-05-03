@@ -2,7 +2,7 @@ import {ScrollView, Text, View, StyleSheet} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
 import React, {useEffect, useState} from "react";
-import {createTableInfoUser, getInfoUsers, insertInfoUser} from "../services/database/Database";
+import {createTableInfoUser, getInfoUsers, insertInfoUser} from "../services/Database";
 import Constants from "expo-constants";
 import * as SQLite from "expo-sqlite";
 

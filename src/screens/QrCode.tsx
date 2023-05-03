@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {Button, TextInput} from 'react-native-paper'
-import {createTableInfoUser, insertInfoUser} from "../services/database/Database";
+import {createTableInfoUser, insertInfoUser} from "../services/Database";
 import {Controller, useForm} from "react-hook-form";
 
 export default function QrCode({}) {

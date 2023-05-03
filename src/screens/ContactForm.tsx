@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
 import { Button, TextInput} from 'react-native-paper'
-import {createTableInfo} from "../services/database/Database";
+import {createTableInfo} from "../services/Database";
 
 
 export default function ContactForm() {
