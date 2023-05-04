@@ -19,13 +19,19 @@ export default function QrCode({}) {
 
     const handleBarCodeScanned = ( donnee :{type: string, data: string}) => {
         setScanned(true);
-        const dataToSave = JSON.parse(donnee.data);
-        const user: {mail: string, nom: string,prenom: string, phoneNumber: string, lastDiploma: string } = {mail : dataToSave['mail'], nom: dataToSave['nom'], prenom: dataToSave['prenom'], phoneNumber : dataToSave['phoneNumber'], lastDiploma: dataToSave['lastDiploma']}
-        insertInfoUser(user).then((res) => {
-            alert('Le user à été enregistré');
-        }).catch((error) => {
-            alert(error);
-        })
+        console.log(donnee);
+        try {
+            const dataToSave = JSON.parse(donnee.data);
+            const user: {mail: string, nom: string,prenom: string, phoneNumber: string, lastDiploma: string } = {mail : dataToSave['mail'], nom: dataToSave['nom'], prenom: dataToSave['prenom'], phoneNumber : dataToSave['phoneNumber'], lastDiploma: dataToSave['lastDiploma']}
+            insertInfoUser(user).then((res) => {
+                alert('Le user à été enregistré');
+            }).catch((error) => {
+                alert(error);
+            })
+        }catch (e){
+            alert("Mauvais qr code donné");
+        }
+
     };
 
     if (hasPermission === null) {
