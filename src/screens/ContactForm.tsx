@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
 import { Button, TextInput} from 'react-native-paper'
 import * as SQLite from 'expo-sqlite'
-import { FlatList } from 'react-native'
 
 
 export default function ContactForm() {
@@ -12,12 +11,10 @@ export default function ContactForm() {
   const [ info, setInfo ] = useState([] as any[]);
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const [ diploma, setDiploma ] = useState('');
-
+  
 
   useEffect(() => {
-    db.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT,  phoneNumber INTEGER, diploma TEXT)')
-    });
+    createTableInfo();
 
     getInfo();
 
@@ -25,8 +22,9 @@ export default function ContactForm() {
 
   const setInfoDb = () => {
     db.transaction(tx => {
-      tx.executeSql('INSERT INTO info(phoneNumber,diploma) VALUES(?1 , ?2)', [phoneNumber,diploma], (transaction, resultSet) => {
-        console.log(resultSet.rowsAffected)
+
+      tx.executeSql('INSERT INTO info (phoneNumber,diploma) VALUES(?1 , ?2)', [phoneNumber,diploma], (transaction, resultSet) => {
+        console.log('Row added')
       })
     });
   }
@@ -50,56 +48,71 @@ export default function ContactForm() {
     ));
   }
 
-  const renderInfo = ({item}) => {
-    return (
-      <View>
-        <Text>
-          {item.id} - {item.phoneNumber}
-        </Text>
-      </View>
-    )
+  const createTableInfo = () =>{
+    db.transaction(tx => {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT,  phoneNumber INTEGER, diploma TEXT)')
+    });
   }
-  
 
-  const { handleSubmit, formState: { errors } } = useForm({
+  const deleteTable = () => {
+    db.transaction(tx => {
+      tx.executeSql('DROP TABLE info')
+    });
+    createTableInfo();
+  }
+
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       phoneNumber: '',
       lastDiploma: ''
     }
   });
 
-  const onSubmit = (data: {phoneNumber : string, lastDiploma : string}) => {
-    console.log("diplome",diploma,", phone number", phoneNumber);
+  const onSubmit = () => {
+    console.log("diplome: ",diploma,", phone number: ", phoneNumber);
     setInfoDb();
     getInfo();
   };
 
-
-  console.log('errors', errors);
-
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Numéro de téléphone</Text>
-      <View style={styles.container}>
+      <Text style={styles.label}>Numéro de téléphone :</Text>
+      <Controller
+        control={control}
+        render={({field: { onBlur }}) => (
         <TextInput
           style={styles.input}
+          onBlur={onBlur}
           onChangeText={setPhoneNumber}
           value={phoneNumber}
-        />
-      </View>
-      <View style={styles.container}>
+          />
+        )}
+        name="phoneNumber"
+        rules={{ required: false }}
+      />
+      <Text style={styles.label}>Dernier diplôme obtenu :</Text>
+      <Controller
+        control={control}
+        render={({field: { onBlur }}) => (
         <TextInput
           style={styles.input}
+          onBlur={onBlur}
           onChangeText={setDiploma}
           value={diploma}
-        />
-      </View>
+          />
+        )}
+        name="lastDiploma"
+        rules={{ required: false }}
+      />
       <View style={styles.button}>
         <Button
           onPress={handleSubmit(onSubmit)}
         >Valider</Button>
+        <Button onPress={deleteTable
+        }>
+          Reset Data
+        </Button>
       </View>
-      <FlatList data={info} renderItem={renderInfo}></FlatList>
     </View>
   )
 }
