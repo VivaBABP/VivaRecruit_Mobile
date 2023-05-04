@@ -17,11 +17,7 @@ export default function ContactForm() {
     });
 
     useEffect(() => {
-        createTableInfoUser().then((res) => {
-            console.log(res);
-        }).catch((error) => {
-            console.log(error.message)
-        });
+        createTableInfoUser()
         getInfoUsers().then((res) =>{
             console.log(res.rows.length, ' nb items : ', res.rows._array);
         }).catch((error) => {
