@@ -2,8 +2,11 @@ import {ScrollView, Text, View, StyleSheet} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
 import React, {useEffect} from "react";
-import {createTableInfoUser, getInfoUsers, insertInfoUser} from "../services/Database";
+import {createTableInfoUser, getInfoUsers, updateInfoUser} from "../services/Database";
 import Constants from "expo-constants";
+
+// Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
+// La ligne sera créée lors de la création du compte avec le mail uniquement.
 
 export default function ContactForm() {
     const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm({
@@ -26,7 +29,9 @@ export default function ContactForm() {
     })
 
     const save = (data: { mail: string, nom: string, prenom: string, phoneNumber: string, lastDiploma: string }) => {
-        insertInfoUser(data).then((res)=> {
+        console.log('avant update');
+        updateInfoUser(data).then((res)=> {
+            console.log('je passe dans update');
             console.log(res);
         }).catch((error) =>{
             console.log('error',error.message);
