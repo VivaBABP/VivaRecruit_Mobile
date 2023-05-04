@@ -1,41 +1,41 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {BarCodeScanner} from 'expo-barcode-scanner';
-import {Button, TextInput} from 'react-native-paper'
-import {createTableInfoUser, insertInfoUser} from "../services/Database";
-import {Controller, useForm} from "react-hook-form";
+import {Button} from 'react-native-paper'
+import {createTableInfoUser} from "../services/Database";
 
 export default function QrCode({}) {
     const [hasPermission, setHasPermission] = useState('');
     const [scanned, setScanned] = useState(false);
-    const [read, setRead] = useState(false);
     useEffect(() => {
-
         const getBarCodeScannerPermissions = async () => {
             const {status} = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
+            setHasPermission(status === 'granted' ? 'granted':'false');
         };
         createTableInfoUser();
         getBarCodeScannerPermissions();
     }, []);
 
-    const handleBarCodeScanned = ({type, data}) => {
+    const handleBarCodeScanned = ( donnee :{type: string, data: string}) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        alert(`Bar code with type ${donnee.type} and data ${donnee.data} has been scanned!`);
     };
 
     if (hasPermission === null) {
         return <Text>Requesting for camera permission</Text>;
     }
-    if (hasPermission === false) {
+    if (hasPermission === 'false') {
         return <Text>No access to camera</Text>;
     }
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center'
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        qrCode: {
+            width : '100%',
         }
     })
 

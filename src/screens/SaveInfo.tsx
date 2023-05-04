@@ -1,10 +1,9 @@
 import {ScrollView, Text, View, StyleSheet} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {createTableInfoUser, getInfoUsers, insertInfoUser} from "../services/Database";
 import Constants from "expo-constants";
-import * as SQLite from "expo-sqlite";
 
 export default function SaveInfo() {
     const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm({
@@ -21,7 +20,7 @@ export default function SaveInfo() {
     })
 
     const save = async (data: any) => {
-        insertInfoUser(data);
+        await insertInfoUser(data);
         getInfoUsers().then((res) => {
             console.log("là c'est saveInfo",res);
             for (let i = 0; i < res.rows.length; i++) {

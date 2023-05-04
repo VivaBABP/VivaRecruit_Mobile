@@ -1,15 +1,11 @@
-import {ImageBackground, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native'
-import {Text, Button, TextInput} from 'react-native-paper'
-import React, {useEffect, useState} from 'react'
-import {Controller, useForm} from "react-hook-form";
-import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
-import * as SQLite from 'expo-sqlite'
+import {Text, Button} from 'react-native-paper'
+import React from 'react'
 import * as DocumentPicker from 'expo-document-picker'
 import {DocumentResult} from "expo-document-picker";
+import {View} from "react-native";
 
 // @ts-ignore
-export default function CV({navigation}) {
-    const [singleFile, setSingleFile] = useState(null);
+export default function CV() {
 
 
     async function pickDocument() {

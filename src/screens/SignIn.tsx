@@ -1,9 +1,8 @@
 import {ImageBackground, StyleSheet, View} from 'react-native'
 import {Text, Button, TextInput} from 'react-native-paper'
-import React, {useState} from 'react'
+import React from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
-import * as SQLite from 'expo-sqlite'
 
 // @ts-ignore
 export default function SignIn({navigation}) {
@@ -13,16 +12,12 @@ export default function SignIn({navigation}) {
         formState: { errors }
     } = useForm({
         defaultValues: {
-            mail: '',
+            email: '',
             password: ''
         }
     })
 
-
-
-
-
-    const onSubmit = (data: { mail: string, password: string }) => {
+    const onSubmit = (data: { email: string, password: string }) => {
         navigation.navigate("Tab");
     };
 
@@ -73,7 +68,7 @@ export default function SignIn({navigation}) {
                                 autoComplete={'email'}
                                 inputMode={'email'}
                             />
-                        )} name="mail" />
+                        )} name="email" />
                 </View>
                 <View style={styles.rounded}>
                     <Controller rules={{ required: true }}
@@ -89,7 +84,7 @@ export default function SignIn({navigation}) {
                                 secureTextEntry={true} />
                         )} />
                 </View>
-                {(errors.password || errors.mail) && <Text>Champs obligatoires invalide</Text>}
+                {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
             </View>

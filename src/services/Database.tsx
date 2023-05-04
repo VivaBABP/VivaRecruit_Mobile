@@ -18,7 +18,7 @@ export function createTableInfoUser(): any {
     })
 }
 
-export async function getInfoUsers(): Promise<any> {
+export async function getInfoUsers(): Promise<SQLResultSet> {
     return new Promise((resolve, reject) => {
         db.transaction((txn) => {
             txn.executeSql('SELECT mail, nom, prenom, phoneNumber from infoUser', [], (transaction, result) => {

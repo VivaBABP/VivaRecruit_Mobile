@@ -8,6 +8,8 @@ import RefreshTest from '../screens/RefreshTest';
 import CV from "../screens/CV";
 import QrCode from "../screens/QrCode";
 import SaveInfo from "../screens/SaveInfo";
+import GenerateQrCode from "../screens/GenerateQrCode";
+import PageQrCode from "../screens/PageQrCode";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,8 +29,8 @@ export default function TabNavigator() {
         <Tab.Screen name='Cv' component={CV} options={{
             tabBarIcon: ({color, size}) => ( <Ionicons name="reader" color={color} size={size}/>)
         }} />
-        <Tab.Screen name='QrCode' component={QrCode} options={{
-            tabBarIcon: ({color, size}) => ( <Ionicons name="" color={color} size={size}/>)
+        <Tab.Screen name='QrCode' component={PageQrCode} options={{
+            tabBarIcon: ({color, size}) => ( <Ionicons name="qr-code-outline" color={color} size={size}/>)
         }} />
         <Tab.Screen name='Save' component={SaveInfo}/>
     </Tab.Navigator>
