@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {Button} from 'react-native-paper'
-import {createTableInfoUser} from "../services/Database";
+import {createTableInfoUser, insertInfoUser} from "../services/Database";
+import {getIconColor} from "react-native-paper/lib/typescript/src/components/TextInput/Adornment/utils";
 
 export default function QrCode({}) {
     const [hasPermission, setHasPermission] = useState('');
@@ -18,14 +19,20 @@ export default function QrCode({}) {
 
     const handleBarCodeScanned = ( donnee :{type: string, data: string}) => {
         setScanned(true);
-        alert(`Bar code with type ${donnee.type} and data ${donnee.data} has been scanned!`);
+        const dataToSave = JSON.parse(donnee.data);
+        const user: {mail: string, nom: string,prenom: string, phoneNumber: string, lastDiploma: string } = {mail : dataToSave['mail'], nom: dataToSave['nom'], prenom: dataToSave['prenom'], phoneNumber : dataToSave['phoneNumber'], lastDiploma: dataToSave['lastDiploma']}
+        insertInfoUser(user).then((res) => {
+            alert('Le user à été enregistré');
+        }).catch((error) => {
+            alert(error);
+        })
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return <Text>Demande d'accès à la caméra en cours</Text>;
     }
     if (hasPermission === 'false') {
-        return <Text>No access to camera</Text>;
+        return <Text>Pas d'accès à la camera</Text>;
     }
 
     const styles = StyleSheet.create({
@@ -42,10 +49,10 @@ export default function QrCode({}) {
 
     return (
         <View style={styles.container}>
-            <BarCodeScanner
+            {!scanned && <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
-            />
+            />}
             {scanned && <Button onPress={() => setScanned(false)}>Tap to Scan Again</Button>}
         </View>
     );
