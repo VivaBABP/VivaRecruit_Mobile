@@ -10,7 +10,7 @@ export class AuthService {
     return this.authClient.signIn(credential);
   }
 
-  signUp(createUser: CreateUserDTO): Promise<TokenDTO> {
+  signUp(createUser: CreateUserDTO): Promise<void> {
     return this.authClient.signUp(createUser);
   }
 
