@@ -292,6 +292,118 @@ export class AuthClient {
         }
         return Promise.resolve<TokenDTO>(null as any);
     }
+
+    codeForgotPassword(body: EmailDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/auth/CodeForgotPassword";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCodeForgotPassword(_response);
+        });
+    }
+
+    protected processCodeForgotPassword(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    changeForgotPassword(body: ChangeForgotPasswordDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/auth/ChangeForgotPassword";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processChangeForgotPassword(_response);
+        });
+    }
+
+    protected processChangeForgotPassword(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
 }
 
 export class JobsClient {
@@ -471,7 +583,7 @@ export interface ICreateUserDTO {
 }
 
 export class ValidationCodeDTO implements IValidationCodeDTO {
-    idUser!: number;
+    email!: string;
     code!: number;
 
     [key: string]: any;
@@ -491,7 +603,7 @@ export class ValidationCodeDTO implements IValidationCodeDTO {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.idUser = _data["idUser"];
+            this.email = _data["email"];
             this.code = _data["code"];
         }
     }
@@ -509,14 +621,14 @@ export class ValidationCodeDTO implements IValidationCodeDTO {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["idUser"] = this.idUser;
+        data["email"] = this.email;
         data["code"] = this.code;
         return data;
     }
 }
 
 export interface IValidationCodeDTO {
-    idUser: number;
+    email: string;
     code: number;
 
     [key: string]: any;
@@ -622,6 +734,110 @@ export class CredentialDTO implements ICredentialDTO {
 export interface ICredentialDTO {
     email: string;
     password: string;
+
+    [key: string]: any;
+}
+
+export class EmailDTO implements IEmailDTO {
+    email!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IEmailDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.email = _data["email"];
+        }
+    }
+
+    static fromJS(data: any): EmailDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmailDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["email"] = this.email;
+        return data;
+    }
+}
+
+export interface IEmailDTO {
+    email: string;
+
+    [key: string]: any;
+}
+
+export class ChangeForgotPasswordDTO implements IChangeForgotPasswordDTO {
+    email!: string;
+    password!: string;
+    code!: number;
+
+    [key: string]: any;
+
+    constructor(data?: IChangeForgotPasswordDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.code = _data["code"];
+        }
+    }
+
+    static fromJS(data: any): ChangeForgotPasswordDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeForgotPasswordDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["code"] = this.code;
+        return data;
+    }
+}
+
+export interface IChangeForgotPasswordDTO {
+    email: string;
+    password: string;
+    code: number;
 
     [key: string]: any;
 }

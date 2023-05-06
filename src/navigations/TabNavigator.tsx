@@ -6,6 +6,7 @@ import Contact_Form from '../screens/ContactForm';
 import Job_Form from '../screens/JobForm';
 import RefreshTest from '../screens/RefreshTest';
 import CV from "../screens/CV";
+import ActivationCode from '../screens/ActivationCode';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,7 @@ export default function TabNavigator() {
         <Tab.Screen name='Job Form' component={Job_Form} />
         <Tab.Screen name='RefreshTest' component={RefreshTest} />
         <Tab.Screen name='Cv' component={CV}/>
+        <Tab.Screen name='ActivationCode' component={ActivationCode}/>
     </Tab.Navigator>
   )
 }

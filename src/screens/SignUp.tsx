@@ -22,20 +22,16 @@ export default function SignUp({ navigation }) {
         data.recruit = checked;
         authService.signUp(data)
             .then(() => {
-                console.log("ça marche");
+                navigation.navigate("ActivationCode", data.email);
             })
             .catch((e) => {
                 console.log(JSON.stringify(e.response.message));
             })
-
-        onSubmit();
     }
     const [checked, setChecked] = React.useState(false);
 
 
-    const onSubmit = () => {
-        navigation.navigate("Tab");
-    };
+    
 
     const styles = StyleSheet.create({
         container: {
@@ -110,7 +106,7 @@ export default function SignUp({ navigation }) {
                             setChecked(!checked);
                         }}
                     />
-                    <Text style={{}}> this is checkbox</Text>
+                    <Text style={{}}>Je suis un recruteur</Text>
                 </View>
 
                 {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}

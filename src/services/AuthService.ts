@@ -1,6 +1,6 @@
 import { CreateUserDTO } from './../client/recruitBack';
 import { URL } from "@env";
-import { AuthClient, CredentialDTO, TokenDTO } from "../client/recruitBack";
+import { AuthClient, CredentialDTO, TokenDTO, ValidationCodeDTO } from "../client/recruitBack";
 import axiosApiInstance from '../configuration/axiosInstance';
 
 export class AuthService {
@@ -14,6 +14,10 @@ export class AuthService {
     return this.authClient.signUp(createUser);
   }
 
+  validation(ValidationCode: ValidationCodeDTO): Promise<TokenDTO> {
+    return this.authClient.validation(ValidationCode);
+  }
+  
   test(): Promise<string> {
     const testClient = new AuthClient(URL, axiosApiInstance)
     return testClient.test();
