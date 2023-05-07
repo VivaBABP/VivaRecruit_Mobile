@@ -16,7 +16,7 @@ export default function RefreshTest() {
     });
 
     try {
-      const token = await authService.signIn(login as CredentialDTO);
+      const token = await authService.signIn(login);
 
       await SecureStore.setItemAsync('token', token.access_token);
       await SecureStore.setItemAsync('refreshToken', token.refresh_token);

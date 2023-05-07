@@ -1,25 +1,37 @@
-import {ImageBackground, StyleSheet, View} from 'react-native'
-import {Text, Button, TextInput} from 'react-native-paper'
+import { ImageBackground, StyleSheet, View } from 'react-native'
+import { Text, Button, TextInput, Checkbox } from 'react-native-paper'
 import React from 'react'
-import {Controller, useForm} from "react-hook-form";
-import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
+import { Controller, useForm } from "react-hook-form";
+import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
+import * as SQLite from 'expo-sqlite'
+import { CreateUserDTO } from '../client/recruitBack';
+import { AuthService } from '../services/AuthService';
 
 // @ts-ignore
-export default function SignIn({navigation}) {
+export default function SignUp({ navigation }) {
     const {
         control,
         handleSubmit,
         formState: { errors }
-    } = useForm({
-        defaultValues: {
-            email: '',
-            password: ''
-        }
-    })
+    } = useForm<CreateUserDTO>()
 
-    const onSubmit = (data: { email: string, password: string }) => {
-        navigation.navigate("Tab");
-    };
+
+    const authService = new AuthService;
+
+    const dbStuff = (data: CreateUserDTO) => {
+        data.recruit = checked;
+        authService.signUp(data)
+            .then(() => {
+                navigation.navigate("ActivationCode", data.email);
+            })
+            .catch((e) => {
+                console.log(JSON.stringify(e.response.message));
+            })
+    }
+    const [checked, setChecked] = React.useState(false);
+
+
+    
 
     const styles = StyleSheet.create({
         container: {
@@ -49,7 +61,7 @@ export default function SignIn({navigation}) {
         <ImageBackground style={styles.image} source={require('./../../assets/images/background-gradient-phone.png')}
             resizeMode='cover'>
             <View style={styles.container}>
-                <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page de connexion</Animated.Text>
+                <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page d'inscription</Animated.Text>
                 <View style={styles.rounded}>
                     <Controller rules={{
                         required: true,
@@ -68,7 +80,9 @@ export default function SignIn({navigation}) {
                                 autoComplete={'email'}
                                 inputMode={'email'}
                             />
-                        )} name="email" />
+                        )}
+                        name='email'
+                    />
                 </View>
                 <View style={styles.rounded}>
                     <Controller rules={{ required: true }}
@@ -82,13 +96,24 @@ export default function SignIn({navigation}) {
                                 onChangeText={onChange}
                                 value={value}
                                 secureTextEntry={true} />
-                        )} />
+                        )}
+                    />
                 </View>
+                <View>
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
+                    />
+                    <Text style={{}}>Je suis un recruteur</Text>
+                </View>
+
                 {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
-                <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
-                    connecter</Button>
-                <Button style={styles.connection} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire
-                    </Button>
+
+                <Button style={styles.connection} onPress={handleSubmit(dbStuff)} mode='contained'>S'inscrire
+                </Button>
+
             </View>
         </ImageBackground>
     )
