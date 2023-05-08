@@ -6,6 +6,7 @@ import Animated, { FadeInUp, FadeInDown, Value } from "react-native-reanimated";
 import * as SQLite from 'expo-sqlite'
 import { ValidationCodeDTO } from '../client/recruitBack';
 import { AuthService } from '../services/AuthService';
+import {createInfoUserCandidat} from "../services/Database";
 
 // @ts-ignore
 export default function ActivationCode({ route, navigation }) {
@@ -25,6 +26,7 @@ export default function ActivationCode({ route, navigation }) {
         const validationCodeDTO = new ValidationCodeDTO;
         validationCodeDTO.email = email;
         validationCodeDTO.code = parsed;
+        createInfoUserCandidat(email).then().catch();
         authService.validation(validationCodeDTO)
             .then(() => {
                 navigation.navigate("Tab");

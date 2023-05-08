@@ -1,8 +1,10 @@
 import {ImageBackground, StyleSheet, View} from 'react-native'
 import {Text, Button, TextInput} from 'react-native-paper'
-import React from 'react'
+import React, {useState} from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
+import {CredentialDTO} from "../client/recruitBack";
+import {AuthService} from "../services/AuthService";
 
 // @ts-ignore
 export default function SignIn({navigation}) {
@@ -10,15 +12,17 @@ export default function SignIn({navigation}) {
         control,
         handleSubmit,
         formState: { errors }
-    } = useForm({
-        defaultValues: {
-            email: '',
-            password: ''
-        }
-    })
+    } = useForm<CredentialDTO>();
 
-    const onSubmit = (data: { email: string, password: string }) => {
-        navigation.navigate("Tab");
+    const authServoce = new AuthService;
+    const [error, setError] = useState('');
+
+    const onSubmit = (credentials: CredentialDTO) => {
+        authServoce.signIn(credentials).then(() => {
+            navigation.navigate("Tab");
+        }).catch((e) => {
+            setError(e.response.message);
+        })
     };
 
     const styles = StyleSheet.create({
@@ -84,7 +88,8 @@ export default function SignIn({navigation}) {
                                 secureTextEntry={true} />
                         )} />
                 </View>
-                {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
+                {(errors.password || errors.email) && setError('Champs obligatoires invalide')}
+                <Text>{error}</Text>
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
                 <Button style={styles.connection} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire
