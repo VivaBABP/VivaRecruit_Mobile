@@ -90,8 +90,7 @@ export default function SignIn({navigation}) {
                                 secureTextEntry={true} />
                         )} />
                 </View>
-                {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
-                <Text>{error}</Text>
+                {(errors.password || errors.email) ? <Text>Champs obligatoires invalide</Text> : <Text>{error}</Text>}
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
                 <Button style={styles.connection} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire

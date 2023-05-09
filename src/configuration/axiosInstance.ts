@@ -7,8 +7,6 @@ import {AuthContext} from "../context/AuthContext";
 
 const axiosApiInstance = axios.create();
 
-const { disconnect } = useContext(AuthContext);
-
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
   async config => {
@@ -44,7 +42,8 @@ axiosApiInstance.interceptors.response.use((response) => {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
       return axiosApiInstance(originalRequest);
     } catch (error) {
-      disconnect();
+      await SecureStore.deleteItemAsync("token");
+      await SecureStore.deleteItemAsync("refreshToken");
     }
   }
   return Promise.reject(error);
