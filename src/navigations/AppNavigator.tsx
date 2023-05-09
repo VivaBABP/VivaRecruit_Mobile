@@ -13,13 +13,8 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName='SignIn'>
-                <Stack.Screen name='SignIn' component={SignIn} options={{headerShown: true}}/>
+            <Stack.Navigator initialRouteName='Tab' >
                 <Stack.Screen name='Tab' component={TabNavigator} options={{headerShown: false}}/>
-                <Stack.Screen name='SignUp' component={SignUp} options={{headerShown: true}}/>
-                <Stack.Screen name='ActivationCode' component={ActivationCode} options={{headerShown: true}}/>
             </Stack.Navigator>
-        </NavigationContainer>
     )
 }

@@ -17,7 +17,6 @@ export default function SignUp({ navigation }) {
 
 
     const authService = new AuthService;
-
     const dbStuff = (data: CreateUserDTO) => {
         data.recruit = checked;
         authService.signUp(data)

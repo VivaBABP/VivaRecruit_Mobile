@@ -4,7 +4,7 @@ import { AuthClient, CredentialDTO, TokenDTO, ValidationCodeDTO } from "../clien
 import axiosApiInstance from '../configuration/axiosInstance';
 
 export class AuthService {
-  private authClient = new AuthClient(URL)
+  private authClient = new AuthClient(URL);
 
   signIn(credential: CredentialDTO): Promise<TokenDTO> {  
     return this.authClient.signIn(credential);

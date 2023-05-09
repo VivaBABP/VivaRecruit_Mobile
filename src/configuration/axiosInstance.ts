@@ -2,8 +2,12 @@ import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { URL } from '@env';
 import { AuthClient } from "../client/recruitBack";
+import {useContext} from "react";
+import {AuthContext} from "../context/AuthContext";
 
 const axiosApiInstance = axios.create();
+
+const { disconnect } = useContext(AuthContext);
 
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
@@ -40,8 +44,7 @@ axiosApiInstance.interceptors.response.use((response) => {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
       return axiosApiInstance(originalRequest);
     } catch (error) {
-      await SecureStore.deleteItemAsync("token");
-      await SecureStore.deleteItemAsync("refreshToken");
+      disconnect();
     }
   }
   return Promise.reject(error);
