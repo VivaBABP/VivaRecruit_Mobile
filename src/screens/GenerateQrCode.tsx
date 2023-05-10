@@ -32,7 +32,7 @@ export default function GenerateQrCode() {
     return (
         <View style={styles.container}>
            <View>
-               {userExist ? <QRCode value={valueQrCode} size={300} logo={require('../../assets/logo/logo_vivatech.png')} logoBackgroundColor='white' /> : <Text>Aucune informations stockée pour le qr code</Text>}
+               {userExist ? <QRCode value={valueQrCode} size={300} logo={require('../../assets/logo/logo_vivatech_icon.png')} logoBackgroundColor='white' /> : <Text>Aucune informations stockée pour le qr code</Text>}
            </View>
         </View>
     )

@@ -4,7 +4,7 @@
     "slug": "VivaRecruts_Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/logo_vivatech.png",
+    "icon": "./assets/logo/logo_vivatech_icon.png",
     "userInterfaceStyle": "light",
     "plugins": [
       [
@@ -15,7 +15,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/logo/logo_vivatech.png",
+      "image": "./assets/logo/splash_vivatech.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -27,7 +27,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/logo_vivatech.png",
+        "foregroundImage": "./assets/logo/adaptive-icon_vivatech.png",
         "backgroundColor": "#ffffff"
       }
     },
