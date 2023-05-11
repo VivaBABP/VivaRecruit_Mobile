@@ -1,8 +1,11 @@
 import {ImageBackground, StyleSheet, View} from 'react-native'
 import {Text, Button, TextInput} from 'react-native-paper'
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import {Controller, useForm} from "react-hook-form";
 import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
+import {CredentialDTO} from "../client/recruitBack";
+import {AuthService} from "../services/AuthService";
+import {AuthContext} from "../context/AuthContext";
 
 // @ts-ignore
 export default function SignIn({navigation}) {
@@ -10,15 +13,19 @@ export default function SignIn({navigation}) {
         control,
         handleSubmit,
         formState: { errors }
-    } = useForm({
-        defaultValues: {
-            email: '',
-            password: ''
-        }
-    })
+    } = useForm<CredentialDTO>();
 
-    const onSubmit = (data: { email: string, password: string }) => {
-        navigation.navigate("Tab");
+    const { login } = useContext(AuthContext);
+
+    const authServoce = new AuthService;
+    const [error, setError] = useState('');
+
+    const onSubmit = (credentials: CredentialDTO) => {
+        authServoce.signIn(credentials).then((res) => {
+            login(res);
+        }).catch((e) => {
+            setError(e.response.message);
+        })
     };
 
     const styles = StyleSheet.create({
@@ -64,7 +71,6 @@ export default function SignIn({navigation}) {
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                multiline={true}
                                 autoComplete={'email'}
                                 inputMode={'email'}
                             />
@@ -84,7 +90,7 @@ export default function SignIn({navigation}) {
                                 secureTextEntry={true} />
                         )} />
                 </View>
-                {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
+                {(errors.password || errors.email) ? <Text>Champs obligatoires invalide</Text> : <Text>{error}</Text>}
                 <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
                     connecter</Button>
                 <Button style={styles.connection} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire

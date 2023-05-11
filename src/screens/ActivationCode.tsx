@@ -1,11 +1,13 @@
 import { ImageBackground, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput, Checkbox } from 'react-native-paper'
-import React from 'react'
+import React, {useContext} from 'react'
 import { Controller, useForm } from "react-hook-form";
 import Animated, { FadeInUp, FadeInDown, Value } from "react-native-reanimated";
 import * as SQLite from 'expo-sqlite'
 import { ValidationCodeDTO } from '../client/recruitBack';
 import { AuthService } from '../services/AuthService';
+import {createInfoUserCandidat} from "../services/Database";
+import {AuthContext} from "../context/AuthContext";
 
 // @ts-ignore
 export default function ActivationCode({ route, navigation }) {
@@ -20,14 +22,17 @@ export default function ActivationCode({ route, navigation }) {
     })
     const email = route.params;
     const authService = new AuthService;
+
+    const { login } = useContext(AuthContext);
     const dbStuff = (data: { code: string }) => {
         const parsed = parseInt(data.code);
         const validationCodeDTO = new ValidationCodeDTO;
         validationCodeDTO.email = email;
         validationCodeDTO.code = parsed;
+        createInfoUserCandidat(email).then().catch();
         authService.validation(validationCodeDTO)
-            .then(() => {
-                navigation.navigate("Tab");
+            .then((res) => {
+                login(res);
             })
             .catch((e) => {
                 console.log(JSON.stringify(e.response.message));

@@ -2,6 +2,8 @@ import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { URL } from '@env';
 import { AuthClient } from "../client/recruitBack";
+import {useContext} from "react";
+import {AuthContext} from "../context/AuthContext";
 
 const axiosApiInstance = axios.create();
 
