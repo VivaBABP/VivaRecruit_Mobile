@@ -419,7 +419,7 @@ export class JobsClient {
 
     }
 
-    jobs(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+    jobs(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<string> {
         let url_ = this.baseUrl + "/jobs";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -431,6 +431,7 @@ export class JobsClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -446,7 +447,7 @@ export class JobsClient {
         });
     }
 
-    protected processJobs(response: AxiosResponse): Promise<void> {
+    protected processJobs(response: AxiosResponse): Promise<string> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -458,17 +459,21 @@ export class JobsClient {
         }
         if (status === 201) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result201: any = null;
+            let resultData201  = _responseText;
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return Promise.resolve<string>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<string>(null as any);
     }
 }
 
-export class Client {
+export class CvClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -481,11 +486,22 @@ export class Client {
 
     }
 
-    cv( cancelToken?: CancelToken | undefined): Promise<void> {
+    /**
+     * @param file (optional) 
+     * @return Fichier uploadé avec succès
+     */
+    cv(file: FileParameter | undefined, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/cv";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
@@ -514,9 +530,13 @@ export class Client {
                 }
             }
         }
-        if (status === 201) {
+        if (status === 200) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -896,6 +916,11 @@ export interface ICreateJobDTO {
     skillsNeeded: string;
 
     [key: string]: any;
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {
