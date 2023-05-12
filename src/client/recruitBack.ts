@@ -419,7 +419,7 @@ export class JobsClient {
 
     }
 
-    jobs(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+    jobs(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<string> {
         let url_ = this.baseUrl + "/jobs";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -431,6 +431,7 @@ export class JobsClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -446,7 +447,7 @@ export class JobsClient {
         });
     }
 
-    protected processJobs(response: AxiosResponse): Promise<void> {
+    protected processJobs(response: AxiosResponse): Promise<string> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -458,13 +459,17 @@ export class JobsClient {
         }
         if (status === 201) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result201: any = null;
+            let resultData201  = _responseText;
+                result201 = resultData201 !== undefined ? resultData201 : <any>null;
+    
+            return Promise.resolve<string>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<string>(null as any);
     }
 }
 

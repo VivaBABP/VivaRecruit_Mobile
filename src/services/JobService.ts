@@ -4,7 +4,7 @@ import axiosApiInstance from '../configuration/axiosInstance';
 export class JobService {
   private jobsClient = new JobsClient(URL, axiosApiInstance)
 
-  createJob(createJobDTO: CreateJobDTO): Promise<void> {
+  createJob(createJobDTO: CreateJobDTO): Promise<string> {
     return this.jobsClient.jobs(createJobDTO);
   }
 

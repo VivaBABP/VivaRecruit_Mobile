@@ -14,9 +14,9 @@ export default function JobForm() {
 
   const onSubmit = (data: CreateJobDTO) => {
     authService.createJob(data)
-      .then(() => {
+      .then((data) => {
         // à changer quand on refera l'interface
-        alert("Job crée")
+        alert(data)
       })
       .catch((e) => {
         console.log(e.response.message);
