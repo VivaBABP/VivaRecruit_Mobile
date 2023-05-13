@@ -1,25 +1,25 @@
-import { CreateUserDTO } from './../client/recruitBack';
+import { AuthControllerClient, CreateUserDTO } from './../client/recruitBack';
 import { URL } from "@env";
-import { AuthClient, CredentialDTO, TokenDTO, ValidationCodeDTO } from "../client/recruitBack";
+import { CredentialDTO, TokenDTO, ValidationCodeDTO } from "../client/recruitBack";
 import axiosApiInstance from '../configuration/axiosInstance';
 
 export class AuthService {
-  private authClient = new AuthClient(URL);
+  private authClient = new AuthControllerClient(URL);
 
   signIn(credential: CredentialDTO): Promise<TokenDTO> {  
-    return this.authClient.signIn(credential);
+    return this.authClient.login(credential);
   }
 
   signUp(createUser: CreateUserDTO): Promise<void> {
-    return this.authClient.signUp(createUser);
+    return this.authClient.register(createUser);
   }
 
   validation(ValidationCode: ValidationCodeDTO): Promise<TokenDTO> {
-    return this.authClient.validation(ValidationCode);
+    return this.authClient.emailValidation(ValidationCode);
   }
   
   test(): Promise<string> {
-    const testClient = new AuthClient(URL, axiosApiInstance)
+    const testClient = new AuthControllerClient(URL, axiosApiInstance)
     return testClient.test();
   }
 }
