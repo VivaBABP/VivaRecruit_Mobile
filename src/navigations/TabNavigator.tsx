@@ -6,6 +6,7 @@ import Contact_Form from '../screens/ContactForm';
 import Job_Form from '../screens/JobForm';
 import CV from "../screens/CV";
 import PageQrCode from "../screens/PageQrCode";
+import JobList from '../screens/JobList';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,13 @@ export default function TabNavigator() {
                 component={Contact_Form}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="document-text" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Job List'
+                component={JobList}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
                 }}
             />
             <Tab.Screen

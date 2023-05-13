@@ -11,7 +11,7 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 
-export class AuthClient {
+export class AuthControllerClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -24,7 +24,7 @@ export class AuthClient {
 
     }
 
-    signUp(body: CreateUserDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+    register(body: CreateUserDTO, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/signUp";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -47,11 +47,11 @@ export class AuthClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSignUp(_response);
+            return this.processRegister(_response);
         });
     }
 
-    protected processSignUp(response: AxiosResponse): Promise<void> {
+    protected processRegister(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -76,7 +76,7 @@ export class AuthClient {
         return Promise.resolve<void>(null as any);
     }
 
-    validation(body: ValidationCodeDTO, cancelToken?: CancelToken | undefined): Promise<TokenDTO> {
+    emailValidation(body: ValidationCodeDTO, cancelToken?: CancelToken | undefined): Promise<TokenDTO> {
         let url_ = this.baseUrl + "/auth/validation";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -100,11 +100,11 @@ export class AuthClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processValidation(_response);
+            return this.processEmailValidation(_response);
         });
     }
 
-    protected processValidation(response: AxiosResponse): Promise<TokenDTO> {
+    protected processEmailValidation(response: AxiosResponse): Promise<TokenDTO> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -237,7 +237,7 @@ export class AuthClient {
         return Promise.resolve<string>(null as any);
     }
 
-    signIn(body: CredentialDTO, cancelToken?: CancelToken | undefined): Promise<TokenDTO> {
+    login(body: CredentialDTO, cancelToken?: CancelToken | undefined): Promise<TokenDTO> {
         let url_ = this.baseUrl + "/auth/SignIn";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -261,11 +261,11 @@ export class AuthClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSignIn(_response);
+            return this.processLogin(_response);
         });
     }
 
-    protected processSignIn(response: AxiosResponse): Promise<TokenDTO> {
+    protected processLogin(response: AxiosResponse): Promise<TokenDTO> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -293,7 +293,7 @@ export class AuthClient {
         return Promise.resolve<TokenDTO>(null as any);
     }
 
-    codeForgotPassword(body: EmailDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+    sendEmailForgotPassword(body: EmailDTO, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/CodeForgotPassword";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -316,11 +316,11 @@ export class AuthClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCodeForgotPassword(_response);
+            return this.processSendEmailForgotPassword(_response);
         });
     }
 
-    protected processCodeForgotPassword(response: AxiosResponse): Promise<void> {
+    protected processSendEmailForgotPassword(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -406,7 +406,7 @@ export class AuthClient {
     }
 }
 
-export class JobsClient {
+export class JobsControllerClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -419,7 +419,7 @@ export class JobsClient {
 
     }
 
-    jobs(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<string> {
+    createJob(body: CreateJobDTO, cancelToken?: CancelToken | undefined): Promise<string> {
         let url_ = this.baseUrl + "/jobs";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -443,11 +443,11 @@ export class JobsClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processJobs(_response);
+            return this.processCreateJob(_response);
         });
     }
 
-    protected processJobs(response: AxiosResponse): Promise<string> {
+    protected processCreateJob(response: AxiosResponse): Promise<string> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -471,9 +471,324 @@ export class JobsClient {
         }
         return Promise.resolve<string>(null as any);
     }
+
+    /**
+     * @return Le job à bien été modifié
+     */
+    updateJob(body: UpdateJobDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/jobs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateJob(_response);
+        });
+    }
+
+    protected processUpdateJob(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    getJobs( cancelToken?: CancelToken | undefined): Promise<UpdateJobDTO[]> {
+        let url_ = this.baseUrl + "/jobs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetJobs(_response);
+        });
+    }
+
+    protected processGetJobs(response: AxiosResponse): Promise<UpdateJobDTO[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UpdateJobDTO.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<UpdateJobDTO[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UpdateJobDTO[]>(null as any);
+    }
+
+    getJob(id: string, cancelToken?: CancelToken | undefined): Promise<UpdateJobDTO> {
+        let url_ = this.baseUrl + "/jobs/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetJob(_response);
+        });
+    }
+
+    protected processGetJob(response: AxiosResponse): Promise<UpdateJobDTO> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = UpdateJobDTO.fromJS(resultData200);
+            return Promise.resolve<UpdateJobDTO>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UpdateJobDTO>(null as any);
+    }
+
+    applyJob(body: CreateApplyDto, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/jobs/apply";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processApplyJob(_response);
+        });
+    }
+
+    protected processApplyJob(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    getAppliedJobs( cancelToken?: CancelToken | undefined): Promise<CreateJobDTO[]> {
+        let url_ = this.baseUrl + "/jobs/applied";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetAppliedJobs(_response);
+        });
+    }
+
+    protected processGetAppliedJobs(response: AxiosResponse): Promise<CreateJobDTO[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CreateJobDTO.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CreateJobDTO[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CreateJobDTO[]>(null as any);
+    }
+
+    deleteAppliedJob(idJob: string, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/jobs/applied/{idJob}";
+        if (idJob === undefined || idJob === null)
+            throw new Error("The parameter 'idJob' must be defined.");
+        url_ = url_.replace("{idJob}", encodeURIComponent("" + idJob));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processDeleteAppliedJob(_response);
+        });
+    }
+
+    protected processDeleteAppliedJob(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
 }
 
-export class CvClient {
+export class CvControllerClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -490,7 +805,7 @@ export class CvClient {
      * @param file (optional) 
      * @return Fichier uploadé avec succès
      */
-    cv(file: FileParameter | undefined, cancelToken?: CancelToken | undefined): Promise<void> {
+    uploadCv(file: FileParameter | undefined, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/cv";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -516,11 +831,11 @@ export class CvClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCv(_response);
+            return this.processUploadCv(_response);
         });
     }
 
-    protected processCv(response: AxiosResponse): Promise<void> {
+    protected processUploadCv(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -914,6 +1229,114 @@ export interface ICreateJobDTO {
     jobName: string;
     jobDescription: string;
     skillsNeeded: string;
+
+    [key: string]: any;
+}
+
+export class UpdateJobDTO implements IUpdateJobDTO {
+    jobId!: number;
+    jobName!: string;
+    jobDescription!: string;
+    skillsNeeded!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IUpdateJobDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.jobId = _data["jobId"];
+            this.jobName = _data["jobName"];
+            this.jobDescription = _data["jobDescription"];
+            this.skillsNeeded = _data["skillsNeeded"];
+        }
+    }
+
+    static fromJS(data: any): UpdateJobDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateJobDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["jobId"] = this.jobId;
+        data["jobName"] = this.jobName;
+        data["jobDescription"] = this.jobDescription;
+        data["skillsNeeded"] = this.skillsNeeded;
+        return data;
+    }
+}
+
+export interface IUpdateJobDTO {
+    jobId: number;
+    jobName: string;
+    jobDescription: string;
+    skillsNeeded: string;
+
+    [key: string]: any;
+}
+
+export class CreateApplyDto implements ICreateApplyDto {
+    idJob!: number;
+
+    [key: string]: any;
+
+    constructor(data?: ICreateApplyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.idJob = _data["idJob"];
+        }
+    }
+
+    static fromJS(data: any): CreateApplyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateApplyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["idJob"] = this.idJob;
+        return data;
+    }
+}
+
+export interface ICreateApplyDto {
+    idJob: number;
 
     [key: string]: any;
 }
