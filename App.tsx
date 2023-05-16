@@ -4,7 +4,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigator, {AppNavigatorNotRecruit} from './src/navigations/AppNavigator';
 import {IAction} from "./src/interfaces/IAction";
 import * as SecureStore from 'expo-secure-store';
-import {TokenDTO} from "./src/client/recruitBack";
+import {ITokenDTO, TokenDTO} from "./src/client/recruitBack";
 import {AuthContext} from "./src/context/AuthContext";
 import { NavigationContainer } from '@react-navigation/native';
 import {AuthNavigator} from "./src/navigations/AuthNavigator";
@@ -15,27 +15,30 @@ export default function App() {
 
     const [state, dispatch] = useReducer(
         (prevState: any, action: IAction) => {
-            /*if(action.type != 'DISCONNECT') {
-                let role= false;
-                jwtDecode.default(action.token as string).then((res)=>{role = res.role})
-            }*/
+            let role: {sub: number, email: string, role: boolean} = {sub: 0, email:'' , role: false};
+            if(action.type != 'DISCONNECT') {
+                role = jwtDecode.default(action.token as string)
+            }
             switch (action.type) {
                 case 'RESTORE_TOKEN':
                     return {
                         ...prevState,
                         token: action.token,
+                        role: role.role,
                         isLoading: false,
                     };
                 case 'LOGIN':
                     return {
                         ...prevState,
                         isSignout: false,
+                        role: role.role,
                         token: action.token,
                     };
                 case 'DISCONNECT':
                     return {
                         ...prevState,
                         isSignout: true,
+                        role: role.role,
                         token: null,
                     };
             }
@@ -86,7 +89,7 @@ export default function App() {
                 <AuthContext.Provider value={authContext}>
                 <NavigationContainer>
                     {
-                        state.isSignout ? <AuthNavigator/> : ( state.token) ? <AppNavigatorRecruit/> : <AppNavigatorNotRecruit/>
+                        state.isSignout ? <AuthNavigator/> : ( state.token && state.role) ? <AppNavigatorRecruit/> : <AppNavigatorNotRecruit/>
                     }
                 </NavigationContainer>
                 </AuthContext.Provider>
