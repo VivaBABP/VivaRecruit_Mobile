@@ -44,6 +44,13 @@ export default function TabNavigatorRecruit() {
                     tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
                 }}
             />
+            <Tab.Screen
+                name='QrCode'
+                component={PageQrCode}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="qr-code-outline" color={color} size={size} />)
+                }}
+            />
         </Tab.Navigator>
     )
 }
@@ -93,13 +100,6 @@ export function TabNavigatorNotRecruit() {
             options={{
                 tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
             }} />
-        <Tab.Screen
-            name='QrCode'
-            component={PageQrCode}
-            options={{
-                tabBarIcon: ({ color, size }) => (<Ionicons name="qr-code-outline" color={color} size={size} />)
-            }}
-        />
     </Tab.Navigator>
     )
 }
