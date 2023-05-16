@@ -8,9 +8,6 @@ export default function Home() {
 
     const { disconnect } = useContext(AuthContext);
 
-    useEffect(() => {
-        SecureStore.getItemAsync("token").then((res)=> {console.log(jwtDecode.default(res as string))})
-    })
     const logOut = async () => {await disconnect()};
     return (
         <View>

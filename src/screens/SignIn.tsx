@@ -22,10 +22,8 @@ export default function SignIn({navigation}) {
 
     const onSubmit = (credentials: CredentialDTO) => {
         authServoce.signIn(credentials).then((res) => {
-            console.log("Je passe ?")
             login(res);
         }).catch((e) => {
-            console.log("là c'est mort");
             setError(e.response.message);
         })
     };
