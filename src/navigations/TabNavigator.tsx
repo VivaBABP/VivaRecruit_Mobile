@@ -7,6 +7,7 @@ import Job_Form from '../screens/JobForm';
 import CV from "../screens/CV";
 import PageQrCode from "../screens/PageQrCode";
 import JobList from '../screens/JobList';
+import CompanyForm from '../screens/CompanyForm';
 
 const Tab = createBottomTabNavigator();
 
@@ -67,6 +68,13 @@ export default function TabNavigator() {
                 component={PageQrCode}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="qr-code-outline" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Company form'
+                component={CompanyForm}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="business-outline" color={color} size={size} />)
                 }}
             />
         </Tab.Navigator>

@@ -1,14 +1,14 @@
-import {Text, View, StyleSheet, ScrollView} from "react-native";
-import {Controller, useForm} from "react-hook-form";
-import {Button, TextInput} from "react-native-paper";
-import React, {useEffect} from "react";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Controller, useForm } from "react-hook-form";
+import { Button, TextInput } from "react-native-paper";
+import React, { useEffect } from "react";
 import Constants from "expo-constants";
 
 // Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
 // La ligne sera créée lors de la création du compte avec le mail uniquement.
 
 export default function CompanyForm() {
-    const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm({
+    const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
             CompanyName: '',
             Description: '',
@@ -60,7 +60,7 @@ export default function CompanyForm() {
             <Text style={styles.label}>Nom de l'entreprise</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -74,7 +74,7 @@ export default function CompanyForm() {
             <Text style={styles.label}>Description</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -88,7 +88,7 @@ export default function CompanyForm() {
             <Text style={styles.label}>Lien vers le site</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -101,7 +101,7 @@ export default function CompanyForm() {
             <Text style={styles.label}>Secteur d'activité</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -114,7 +114,7 @@ export default function CompanyForm() {
             <Text style={styles.label}>Type d'entreprise</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
