@@ -16,7 +16,7 @@ export default function App() {
     const [state, dispatch] = useReducer(
         (prevState: any, action: IAction) => {
             let role: {sub: number, email: string, role: boolean} = {sub: 0, email:'' , role: false};
-            if(action.type != 'DISCONNECT') {
+            if(action.type != 'DISCONNECT' && action.token) {
                 role = jwtDecode.default(action.token as string)
             }
             switch (action.type) {
@@ -89,7 +89,7 @@ export default function App() {
                 <AuthContext.Provider value={authContext}>
                 <NavigationContainer>
                     {
-                        state.isSignout ? <AuthNavigator/> : ( state.token && state.role) ? <AppNavigatorRecruit/> : <AppNavigatorNotRecruit/>
+                        (state.token == null) ? <AuthNavigator/> : ( state.token && state.role) ? <AppNavigatorRecruit/> : <AppNavigatorNotRecruit/>
                     }
                 </NavigationContainer>
                 </AuthContext.Provider>
