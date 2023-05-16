@@ -1,48 +1,28 @@
-import {ScrollView, Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, ScrollView} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
 import React, {useEffect} from "react";
-import {createTableInfoUser, getInfoUsers, updateInfoUser} from "../services/Database";
 import Constants from "expo-constants";
 
 // Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
 // La ligne sera créée lors de la création du compte avec le mail uniquement.
 
-export default function ContactForm() {
+export default function CompanyForm() {
     const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm({
         defaultValues: {
-            mail: '',
-            nom: '',
-            prenom: '',
-            phoneNumber: '',
-            lastDiploma: ''
+            CompanyName: '',
+            Description: '',
+            WebsiteLink: '',
+            LineOfBusiness: '',
+            CompanyType: ''
         }
     });
 
     useEffect(() => {
-        createTableInfoUser()
-        getInfoUsers().then((res) =>{
-            console.log(res.rows.length, ' nb items : ', res.rows._array);
-        }).catch((error) => {
-            console.log(error.message, " erreurs");
-        })
     })
 
-    const save = (data: { mail: string, nom: string, prenom: string, phoneNumber: string, lastDiploma: string }) => {
-        console.log('avant update');
-        updateInfoUser(data).then((res)=> {
-            console.log('je passe dans update');
-            console.log(res);
-        }).catch((error) =>{
-            console.log('error',error.message);
-        });
-        getInfoUsers().then((res) => {
-            for (let i = 0; i < res.rows.length; i++) {
-                console.log(res.rows.item(i));
-            }
-        }).catch((error) => {
-            console.error('error: ',error.message);
-        });
+    const save = (data: { CompanyName: string, Description: string, WebsiteLink: string, LineOfBusiness: string, CompanyType: string }) => {
+        console.log('création entreprise');
     };
 
     const styles = StyleSheet.create({
@@ -77,7 +57,7 @@ export default function ContactForm() {
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.label}>Numéro de téléphone</Text>
+            <Text style={styles.label}>Nom de l'entreprise</Text>
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
@@ -86,15 +66,12 @@ export default function ContactForm() {
                         onBlur={onBlur}
                         onChangeText={value => onChange(value)}
                         value={value}
-                        keyboardType={'phone-pad'}
-                        placeholder={"commençant par : +"}
                     />
                 )}
-                name="phoneNumber"
-                rules={{required: true,pattern:{value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, message:'Format de téléphone invalide' }}}
+                name="CompanyName"
             />
-            {errors.phoneNumber && <Text>Numéro de téléphone incorrect</Text>}
-            <Text style={styles.label}>Mail</Text>
+            {errors.CompanyName}
+            <Text style={styles.label}>Description</Text>
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
@@ -103,14 +80,12 @@ export default function ContactForm() {
                         onBlur={onBlur}
                         onChangeText={value => onChange(value)}
                         value={value}
-                        keyboardType={'email-address'}
                     />
                 )}
-                name="mail"
-                rules={{required: true, pattern:{value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide'}}}
+                name="Description"
             />
-            {errors.mail && <Text>Mail incorrect</Text>}
-            <Text style={styles.label}>Nom</Text>
+            {errors.Description}
+            <Text style={styles.label}>Lien vers le site</Text>
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
@@ -121,10 +96,9 @@ export default function ContactForm() {
                         value={value}
                     />
                 )}
-                name="nom"
-                rules={{required: true}}
+                name="WebsiteLink"
             />
-            <Text style={styles.label}>Prenom</Text>
+            <Text style={styles.label}>Secteur d'activité</Text>
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
@@ -135,10 +109,9 @@ export default function ContactForm() {
                         value={value}
                     />
                 )}
-                name="prenom"
-                rules={{required: true}}
+                name="LineOfBusiness"
             />
-            <Text style={styles.label}>Dernier diplôme obtenu</Text>
+            <Text style={styles.label}>Type d'entreprise</Text>
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
@@ -149,18 +122,17 @@ export default function ContactForm() {
                         value={value}
                     />
                 )}
-                name="lastDiploma"
-                rules={{required: true}}
+                name="CompanyType"
             />
             <View style={styles.button}>
                 <Button
                     onPress={() => {
                         reset({
-                            phoneNumber: '',
-                            mail: '',
-                            nom: '',
-                            prenom: '',
-                            lastDiploma:''
+                            CompanyName: '',
+                            Description: '',
+                            WebsiteLink: '',
+                            LineOfBusiness: '',
+                            CompanyType: ''
                         })
                     }}
                 >Reset</Button>
