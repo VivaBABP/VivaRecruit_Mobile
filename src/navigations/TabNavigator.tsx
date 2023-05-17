@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, {useEffect, useMemo, useState} from 'react'
+import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Contact_Form from '../screens/ContactForm';
@@ -7,8 +7,7 @@ import Job_Form from '../screens/JobForm';
 import CV from "../screens/CV";
 import PageQrCode from "../screens/PageQrCode";
 import JobList from '../screens/JobList';
-import * as SecureStore from 'expo-secure-store';
-import * as jwtDecode from "jwt-decode";
+import CompanyForm from '../screens/CompanyForm';
 
 const Tab = createBottomTabNavigator();
 
