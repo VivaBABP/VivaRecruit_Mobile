@@ -50,6 +50,13 @@ export default function TabNavigatorRecruit() {
                     tabBarIcon: ({ color, size }) => (<Ionicons name="qr-code-outline" color={color} size={size} />)
                 }}
             />
+            <Tab.Screen
+                name='Company form'
+                component={CompanyForm}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="business-outline" color={color} size={size} />)
+                }}
+            />
         </Tab.Navigator>
     )
 }
