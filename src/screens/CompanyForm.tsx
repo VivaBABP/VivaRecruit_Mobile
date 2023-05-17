@@ -69,8 +69,9 @@ export default function CompanyForm() {
                     />
                 )}
                 name="CompanyName"
+                rules={{required: true}}
             />
-            {errors.CompanyName}
+            {errors.CompanyName && <Text>Nom requis</Text>}
             <Text style={styles.label}>Description</Text>
             <Controller
                 control={control}
@@ -84,7 +85,6 @@ export default function CompanyForm() {
                 )}
                 name="Description"
             />
-            {errors.Description}
             <Text style={styles.label}>Lien vers le site</Text>
             <Controller
                 control={control}
