@@ -1,18 +1,49 @@
-import { View, Text, Button } from 'react-native'
-import React, {useContext, useEffect} from 'react'
+import {View, Text, Button, useWindowDimensions} from 'react-native'
+import React, {useContext, useEffect, useState} from 'react'
 import {AuthContext} from "../context/AuthContext";
-import * as SecureStore from 'expo-secure-store';
-import * as jwtDecode from "jwt-decode";
+import {SceneMap, TabBar, TabView} from "react-native-tab-view";
+import SeeStands from "../components/stands/SeeStands";
+import SuggestedStands from "../components/stands/SuggestedStands";
 
 export default function Home() {
 
-    const { disconnect } = useContext(AuthContext);
+    const layout = useWindowDimensions();
 
-    const logOut = async () => {await disconnect()};
+    const [index, setIndex] = useState(0);
+
+    const [routes] = useState([
+        {key: 'suggestedStands', title: 'Stands suggéré'},
+        {key: 'seeStands', title: 'Tous les stands'},
+    ]);
+
+    const renderScene = SceneMap({
+        suggestedStands: SuggestedStands,
+        seeStands: SeeStands,
+    });
+
+
     return (
-        <View>
-            <Text>Bonjour Hugo</Text>
-            <Button title="Déconnecter" onPress={logOut} />
-        </View>
+        <TabView
+            navigationState={{index, routes}}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{width: layout.width}}
+            renderTabBar={
+                (props) => (
+                    <TabBar
+                        {...props}
+                        renderLabel={({route}) => (
+                            <Text style={{color: 'black'}}>
+                                {route.title}
+                            </Text>
+                        )}
+                        style={{
+                            backgroundColor: 'white'
+
+                        }}
+                    />
+                )
+            }
+        />
     )
 }
