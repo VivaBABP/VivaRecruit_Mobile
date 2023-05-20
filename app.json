@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "vivarecruit_mds",
     "name": "VivaRecruts_Mobile",
     "slug": "VivaRecruts_Mobile",
     "version": "1.0.0",
@@ -23,16 +24,29 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/adaptive-icon_vivatech.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.vivarecruit_mds.VivaRecruts_Mobile"
     },
     "web": {
-      "favicon": "./assets/logo/logo_vivatech.png"
+      "favicon": "./assets/logo/logo_vivatech_icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5cfad71e-b460-42b5-a8d5-28161a5c0d7e"
+      }
     }
   }
 }
