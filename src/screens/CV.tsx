@@ -3,10 +3,12 @@ import React from 'react'
 import * as DocumentPicker from 'expo-document-picker'
 import {DocumentResult} from "expo-document-picker";
 import {View} from "react-native";
+import CvService from '../services/CvService';
 
 // @ts-ignore
 export default function CV() {
 
+    const cvService = new CvService;
 
     async function pickDocument() {
 
@@ -25,18 +27,12 @@ export default function CV() {
     const uploadFile = async (result: DocumentResult) => {
         try {
             if (result.type !== "cancel") {
-                const formData = new FormData();
-                formData.append('file', {
-                    uri: result.uri,
-                    type: result.type,
-                    name: result.name,
-                });
-                console.log(formData);
+                await cvService.uploadCv(result.uri);
             } else {
                 console.log("Je vous ai bien niquez")
             }
         } catch (error) {
-            console.log(error)
+            console.log(JSON.stringify(error))
         }
     }
 
