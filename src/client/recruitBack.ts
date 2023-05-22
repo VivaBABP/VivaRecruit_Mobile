@@ -1197,6 +1197,359 @@ export class InterestControllerClient {
     }
 }
 
+export class PanelControllerClient {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    create(body: CreatePanelDto , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/panel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCreate(_response);
+        });
+    }
+
+    protected processCreate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    findAll(  cancelToken?: CancelToken | undefined): Promise<GetPanelDto[]> {
+        let url_ = this.baseUrl + "/panel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processFindAll(_response);
+        });
+    }
+
+    protected processFindAll(response: AxiosResponse): Promise<GetPanelDto[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetPanelDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<GetPanelDto[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetPanelDto[]>(null as any);
+    }
+
+    findOne(id: string , cancelToken?: CancelToken | undefined): Promise<GetPanelDto> {
+        let url_ = this.baseUrl + "/panel/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processFindOne(_response);
+        });
+    }
+
+    protected processFindOne(response: AxiosResponse): Promise<GetPanelDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = GetPanelDto.fromJS(resultData200);
+            return Promise.resolve<GetPanelDto>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetPanelDto>(null as any);
+    }
+
+    update(id: string, body: UpdatePanelDto , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/panel/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    remove(id: string , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/panel/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processRemove(_response);
+        });
+    }
+
+    protected processRemove(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    getSuggestionParcours(  cancelToken?: CancelToken | undefined): Promise<GetPanelDto[]> {
+        let url_ = this.baseUrl + "/panel/suggestion";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetSuggestionParcours(_response);
+        });
+    }
+
+    protected processGetSuggestionParcours(response: AxiosResponse): Promise<GetPanelDto[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetPanelDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<GetPanelDto[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetPanelDto[]>(null as any);
+    }
+}
+
 export class CreateUserDTO implements ICreateUserDTO {
     email!: string;
     password!: string;
@@ -1825,6 +2178,174 @@ export class AddInterestPanelDto implements IAddInterestPanelDto {
 export interface IAddInterestPanelDto {
     idPanel: number;
     idInterest: number;
+
+    [key: string]: any;
+}
+
+export class CreatePanelDto implements ICreatePanelDto {
+    namePanel!: string;
+    companyId!: number;
+    interestsId!: number;
+
+    [key: string]: any;
+
+    constructor(data?: ICreatePanelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.namePanel = _data["namePanel"];
+            this.companyId = _data["companyId"];
+            this.interestsId = _data["interestsId"];
+        }
+    }
+
+    static fromJS(data: any): CreatePanelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePanelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["namePanel"] = this.namePanel;
+        data["companyId"] = this.companyId;
+        data["interestsId"] = this.interestsId;
+        return data;
+    }
+}
+
+export interface ICreatePanelDto {
+    namePanel: string;
+    companyId: number;
+    interestsId: number;
+
+    [key: string]: any;
+}
+
+export class GetPanelDto implements IGetPanelDto {
+    panelName!: string;
+    companyName!: string;
+    interestLabel!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IGetPanelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.panelName = _data["panelName"];
+            this.companyName = _data["companyName"];
+            this.interestLabel = _data["interestLabel"];
+        }
+    }
+
+    static fromJS(data: any): GetPanelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPanelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["panelName"] = this.panelName;
+        data["companyName"] = this.companyName;
+        data["interestLabel"] = this.interestLabel;
+        return data;
+    }
+}
+
+export interface IGetPanelDto {
+    panelName: string;
+    companyName: string;
+    interestLabel: string;
+
+    [key: string]: any;
+}
+
+export class UpdatePanelDto implements IUpdatePanelDto {
+    namePanel?: string;
+    companyId?: number;
+    interestsId?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IUpdatePanelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.namePanel = _data["namePanel"];
+            this.companyId = _data["companyId"];
+            this.interestsId = _data["interestsId"];
+        }
+    }
+
+    static fromJS(data: any): UpdatePanelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdatePanelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["namePanel"] = this.namePanel;
+        data["companyId"] = this.companyId;
+        data["interestsId"] = this.interestsId;
+        return data;
+    }
+}
+
+export interface IUpdatePanelDto {
+    namePanel?: string;
+    companyId?: number;
+    interestsId?: number;
 
     [key: string]: any;
 }

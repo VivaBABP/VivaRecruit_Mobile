@@ -30,16 +30,16 @@ export default function App() {
                 case 'LOGIN':
                     return {
                         ...prevState,
+                        token: action.token,
                         isSignout: false,
                         role: role.role,
-                        token: action.token,
                     };
                 case 'DISCONNECT':
                     return {
                         ...prevState,
+                        token: null,
                         isSignout: true,
                         role: role.role,
-                        token: null,
                     };
             }
         },
