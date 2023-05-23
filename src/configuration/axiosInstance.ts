@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { URL } from '@env';
-import { AuthClient } from "../client/recruitBack";
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
+import { AuthControllerClient } from "../client/recruitBack";
 
 const axiosApiInstance = axios.create();
 
@@ -36,7 +36,7 @@ axiosApiInstance.interceptors.response.use((response) => {
       }
     })
     try {
-      const access_token = await new AuthClient(URL, refreshInstance).refresh();
+      const access_token = await new AuthControllerClient(URL, refreshInstance).refresh();
       await SecureStore.setItemAsync("token", access_token.access_token)
       await SecureStore.setItemAsync("refreshToken", access_token.refresh_token)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
