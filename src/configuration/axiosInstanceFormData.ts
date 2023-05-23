@@ -32,7 +32,7 @@ axiosApiInstanceFormData.interceptors.response.use((response) => {
     const refreshInstance = axios.create({
       headers: {
         'Authorization': `Bearer ${refreshToken}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       }
     })
     try {

@@ -861,6 +861,83 @@ export class CvControllerClient {
     }
 }
 
+export class AccountsControllerClient {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    /**
+     * @return Vos informations de compte sont enregistées
+     */
+    addUserInformation(body: InformationUserDTO, cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/accounts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processAddUserInformation(_response);
+        });
+    }
+
+    protected processAddUserInformation(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 201) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("Mauvais utilisateur", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+}
+
 export class InterestControllerClient {
     private instance: AxiosInstance;
     private baseUrl: string;
@@ -2038,6 +2115,66 @@ export class CreateApplyDto implements ICreateApplyDto {
 
 export interface ICreateApplyDto {
     idJob: number;
+
+    [key: string]: any;
+}
+
+export class InformationUserDTO implements IInformationUserDTO {
+    name!: string;
+    lastName!: string;
+    phoneNumber!: string;
+    lastDiploma!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IInformationUserDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.name = _data["name"];
+            this.lastName = _data["lastName"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.lastDiploma = _data["lastDiploma"];
+        }
+    }
+
+    static fromJS(data: any): InformationUserDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new InformationUserDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["name"] = this.name;
+        data["lastName"] = this.lastName;
+        data["phoneNumber"] = this.phoneNumber;
+        data["lastDiploma"] = this.lastDiploma;
+        return data;
+    }
+}
+
+export interface IInformationUserDTO {
+    name: string;
+    lastName: string;
+    phoneNumber: string;
+    lastDiploma: string;
 
     [key: string]: any;
 }

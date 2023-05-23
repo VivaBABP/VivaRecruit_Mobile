@@ -6,10 +6,10 @@ import { FileParameter } from "../client/recruitBack";
 export default class CvService {
   private CvClient = new CvControllerClient(URL, axiosApiInstanceFormData)
 
-  uploadCv(data: string): Promise<void> {
+  uploadCv(data: string, name: string): Promise<void> {
     const formData: FileParameter = {
       data: data,
-      fileName: 'File'
+      fileName: name
     }
     return this.CvClient.uploadCv(formData);
   }
