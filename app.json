@@ -23,16 +23,29 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/adaptive-icon_vivatech.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.huhulacolle.VivaRecruts_Mobile"
     },
     "web": {
-      "favicon": "./assets/logo/logo_vivatech.png"
+      "favicon": "./assets/logo/logo_vivatech_icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3c46aae7-0e37-43d7-8254-411572feaa47"
+      }
     }
   }
 }
