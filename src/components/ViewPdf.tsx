@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CvService from '../services/CvService';
-import Constants from 'expo-constants';
-import { WebView } from 'react-native-webview';
 import { Buffer } from 'buffer'
+import Pdf from 'react-native-pdf';
+import * as FileSystem from 'expo-file-system';
 
 // @ts-ignore
 export default function ViewPdf({ route }) {
 
-  const [PdfBase64, setPdfBase64] = useState("")
+  const [Path, setPath] = useState<any>(null)
 
   const id = route.params as number;
 
@@ -20,17 +20,42 @@ export default function ViewPdf({ route }) {
 
   const getCv = async (id: number) => {
     try {
+      const filePath = `${FileSystem.documentDirectory}${id}.pdf`;
       const cv = await cvService.getCv(id)
-      const pdf = Buffer.from(cv.data).toString('base64');
-      setPdfBase64(pdf);
+      setPath(cv);
     } catch (error) {
       console.log(error);
     }
   }
 
-  return (
-    <View>
-      <Text>Je teste des trucs</Text>
-    </View>
-  )
+  if (!Path) {
+    return (
+      <View>
+        <Text>chargement</Text>
+      </View>
+    )
+  }
+  else {
+    return (
+      <View style={styles.container}>
+        <Pdf
+          source={{ uri: Path }}
+          style={styles.pdf} />
+      </View>
+    )
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  pdf: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  }
+});
