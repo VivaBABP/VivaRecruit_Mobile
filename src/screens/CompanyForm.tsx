@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, TextInput } from "react-native-paper";
 import React, { useEffect } from "react";
 import Constants from "expo-constants";
+import {useFocusEffect} from "@react-navigation/native";
 
 // Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
 // La ligne sera créée lors de la création du compte avec le mail uniquement.
@@ -18,7 +19,8 @@ export default function CompanyForm() {
         }
     });
 
-    useEffect(() => {
+    useFocusEffect(() => {
+
     })
 
     const save = (data: { CompanyName: string, Description: string, WebsiteLink: string, LineOfBusiness: string, CompanyType: string }) => {
