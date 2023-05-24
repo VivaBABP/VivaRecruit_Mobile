@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 export function AppNavigatorNotRecruit() {
     return (
         <Stack.Navigator initialRouteName='Tab'>
-            <Stack.Screen name='Tab' component={TabNavigatorNotRecruit} options={{headerShown: false}} header/>
+            <Stack.Screen name='Tab' component={TabNavigatorNotRecruit} options={{headerShown: false}}/>
         </Stack.Navigator>
     )
 }
