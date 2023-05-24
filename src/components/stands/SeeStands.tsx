@@ -3,14 +3,8 @@ import {FlatList, View} from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {GetPanelDto} from "../../client/recruitBack";
 import {PanelService} from "../../services/PanelService";
-import {AuthContext} from "../../context/AuthContext";
 
 export default function SeeStands() {
-
-    const {disconnect} = useContext(AuthContext);
-    const logOut = async () => {
-        await disconnect()
-    };
 
     const panelService = new PanelService;
 
@@ -43,7 +37,6 @@ export default function SeeStands() {
                 )}
             />
             {panels.length == 0 && <Text>Aucun stand trouvé</Text>}
-            <Button onPress={logOut}>Se déconnecter</Button>
         </View>
     )
 }

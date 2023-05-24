@@ -1,14 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react'
+import React, { useContext } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/Home';
 import JobList from '../../screens/JobList';
 import CV from '../../screens/CV';
-import ContactForm from '../../screens/ContactForm';
+import CandidateInfo from '../../screens/CandidateInfo';
 
 const Tab = createBottomTabNavigator();
 
 export function TabNavigatorNotRecruit() {
+    
   return(
   <Tab.Navigator
       initialRouteName="Home"
@@ -27,28 +28,28 @@ export function TabNavigatorNotRecruit() {
       }}
   >
       <Tab.Screen
-          name='Home'
+          name='Stands'
           component={Home}
           options={{
               tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
           }}
       />
       <Tab.Screen
-          name='Contact Form'
-          component={ContactForm}
+          name='Contact'
+          component={CandidateInfo}
           options={{
               tabBarIcon: ({ color, size }) => (<Ionicons name="document-text" color={color} size={size} />)
           }}
       />
       <Tab.Screen
-          name='Job List'
+          name='Fiches de poste'
           component={JobList}
           options={{
               tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
           }}
       />
       <Tab.Screen
-          name='Cv'
+          name='Uploadez votre'
           component={CV}
           options={{
               tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)

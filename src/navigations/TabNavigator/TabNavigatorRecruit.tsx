@@ -27,7 +27,7 @@ export default function TabNavigatorRecruit() {
             }}
         >
             <Tab.Screen
-                name='Home'
+                name='Stands'
                 component={Home}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
