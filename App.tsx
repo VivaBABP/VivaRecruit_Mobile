@@ -1,15 +1,15 @@
 import React, {useEffect, useMemo, useReducer} from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AppNavigator, {AppNavigatorNotRecruit} from './src/navigations/AppNavigator';
 import {IAction} from "./src/interfaces/IAction";
 import * as SecureStore from 'expo-secure-store';
 import {ITokenDTO, TokenDTO} from "./src/client/recruitBack";
 import {AuthContext} from "./src/context/AuthContext";
 import { NavigationContainer } from '@react-navigation/native';
 import {AuthNavigator} from "./src/navigations/AuthNavigator";
-import AppNavigatorRecruit from "./src/navigations/AppNavigator";
 import * as jwtDecode from "jwt-decode";
+import AppNavigatorRecruit from './src/navigations/AppNavigator/AppNavigatorRecruit';
+import { AppNavigatorNotRecruit } from './src/navigations/AppNavigator/AppNavigatorNotRecruit';
 
 export default function App() {
 
@@ -30,16 +30,16 @@ export default function App() {
                 case 'LOGIN':
                     return {
                         ...prevState,
+                        token: action.token,
                         isSignout: false,
                         role: role.role,
-                        token: action.token,
                     };
                 case 'DISCONNECT':
                     return {
                         ...prevState,
+                        token: null,
                         isSignout: true,
                         role: role.role,
-                        token: null,
                     };
             }
         },

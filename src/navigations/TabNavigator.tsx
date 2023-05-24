@@ -9,6 +9,7 @@ import PageQrCode from "../screens/PageQrCode";
 import JobList from '../screens/JobList';
 import CompanyForm from '../screens/CompanyForm';
 import Interests from '../screens/Interests';
+import SearchStudents from '../screens/SearchStudents';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,13 @@ export default function TabNavigatorRecruit() {
                 component={Home}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Student'
+                component={SearchStudents}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="person-outline" color={color} size={size} />)
                 }}
             />
             <Tab.Screen
