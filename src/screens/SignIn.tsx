@@ -61,6 +61,7 @@ export default function SignIn({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Text style={{fontFamily: '700'}}>Test Police</Text>
             <Image
                 style={styles.image}
                 source={require('./../../assets/logo/adaptive-icon_vivatech.png')}
