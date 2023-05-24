@@ -27,41 +27,6 @@ export default function SignIn({ navigation }) {
         })
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 2,
-            flexDirection: 'column',
-        },
-        input: {
-            marginBottom: 30,
-            display: 'flex',
-            alignItems: 'flex-start',
-            padding: 0,
-        },
-        connection: {
-            width: '70%',
-            marginBottom: 50
-        },
-        image: {
-            flex: 1,
-            width: 250,
-            height: 200,
-            marginTop: 50
-        },
-        inputs: {
-            width: '60%',
-            overflow: 'hidden',
-            borderStyle: 'solid',
-            borderColor: '#0000',
-        },
-        button: {
-            marginBottom: 30,
-        },
-        align: {
-            alignItems: 'center'
-        }
-    })
-
     return (
         <ScrollView style={styles.container}>
             <View style={styles.align}>
@@ -87,7 +52,6 @@ export default function SignIn({ navigation }) {
                                 inputMode={'email'}
                                 mode='outlined'
                                 placeholder="Adresse mail"
-                                
                             />
                         )} name="email" />
                 </View>
@@ -117,3 +81,39 @@ export default function SignIn({ navigation }) {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 2,
+        flexDirection: 'column',
+    },
+    input: {
+        marginBottom: 30,
+        display: 'flex',
+        alignItems: 'flex-start',
+        padding: 0,
+    },
+    connection: {
+        width: '70%',
+        marginBottom: 50
+    },
+    image: {
+        flex: 1,
+        width: 250,
+        height: 200,
+        marginTop: 50
+    },
+    inputs: {
+        width: '60%',
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
+    },
+    button: {
+        marginBottom: 30,
+    backgroundColor: '#EC4D0C'
+    },
+    align: {
+        alignItems: 'center'
+    }
+})
