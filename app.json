@@ -32,7 +32,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/logo/logo_vivatech.png"
+      "favicon": "./assets/logo/logo_vivatech_icon.png"
     }
   }
 }

@@ -43,7 +43,7 @@ export default function SuggestedStands() {
                     </Card>
                 )}
             />
-            {panels.length == 0  && <Text>Aucun stand trouvé</Text>}
+            {!panels  && <Text>Aucun stand trouvé</Text>}
             <Button onPress={logOut}>Se déconnecter</Button>
         </View>
     )
