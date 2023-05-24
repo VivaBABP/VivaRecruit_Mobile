@@ -1,19 +1,19 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { URL } from '@env';
+import { AuthControllerClient } from "../client/recruitBack";
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
-import { AuthControllerClient } from "../client/recruitBack";
 
-const axiosApiInstance = axios.create();
+const axiosApiInstanceFormData = axios.create();
 
 // Request interceptor for API calls
-axiosApiInstance.interceptors.request.use(
+axiosApiInstanceFormData.interceptors.request.use(
   async config => {
     const token = await SecureStore.getItemAsync("token") as string;
     config.headers = {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'multipart/form-data'
     } as any
     return config;
   },
@@ -22,7 +22,7 @@ axiosApiInstance.interceptors.request.use(
   });
 
 // Response interceptor for API calls
-axiosApiInstance.interceptors.response.use((response) => {
+axiosApiInstanceFormData.interceptors.response.use((response) => {
   return response
 }, async function (error) {
   const originalRequest = error.config;
@@ -32,7 +32,7 @@ axiosApiInstance.interceptors.response.use((response) => {
     const refreshInstance = axios.create({
       headers: {
         'Authorization': `Bearer ${refreshToken}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       }
     })
     try {
@@ -40,7 +40,7 @@ axiosApiInstance.interceptors.response.use((response) => {
       await SecureStore.setItemAsync("token", access_token.access_token)
       await SecureStore.setItemAsync("refreshToken", access_token.refresh_token)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token.access_token;
-      return axiosApiInstance(originalRequest);
+      return axiosApiInstanceFormData(originalRequest);
     } catch (error) {
       await SecureStore.deleteItemAsync("token");
       await SecureStore.deleteItemAsync("refreshToken");
@@ -49,4 +49,4 @@ axiosApiInstance.interceptors.response.use((response) => {
   return Promise.reject(error);
 });
 
-export default axiosApiInstance
+export default axiosApiInstanceFormData
