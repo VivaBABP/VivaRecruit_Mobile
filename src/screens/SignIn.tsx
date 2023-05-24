@@ -38,6 +38,7 @@ export default function SignIn({ navigation }) {
             display: 'flex',
             alignItems: 'flex-start',
             padding: 0,
+            borderColor: '#00ccff'
         },
         connection: {
             width: '70%',
@@ -82,6 +83,7 @@ export default function SignIn({ navigation }) {
                             inputMode={'email'}
                             mode='outlined'
                             label="mail"
+                            underlineColor='#00ccff'
                         />
                     )} name="email" />
             </View>
