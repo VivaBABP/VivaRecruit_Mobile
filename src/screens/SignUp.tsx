@@ -3,7 +3,6 @@ import { Text, Button, TextInput, Checkbox } from 'react-native-paper'
 import React from 'react'
 import { Controller, useForm } from "react-hook-form";
 import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
-import * as SQLite from 'expo-sqlite'
 import { CreateUserDTO } from '../client/recruitBack';
 import { AuthService } from '../services/AuthService';
 

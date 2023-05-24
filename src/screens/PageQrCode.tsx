@@ -3,7 +3,7 @@ import {useState} from "react";
 import {View, StyleSheet} from "react-native";
 import {Button} from "react-native-paper";
 import QrCode from "./QrCode";
-import GenerateQrCode from "./GenerateQrCode";
+import GenerateQrCode from "../components/GenerateQrCode";
 
 export default function PageQrCode() {
     const [scan, setScan] = useState(true);
