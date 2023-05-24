@@ -49,7 +49,7 @@ export function TabNavigatorNotRecruit() {
           }}
       />
       <Tab.Screen
-          name='Uploadez votre'
+          name='Uploadez votre CV'
           component={CV}
           options={{
               tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
