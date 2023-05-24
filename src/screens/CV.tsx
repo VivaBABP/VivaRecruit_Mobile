@@ -6,7 +6,7 @@ import { View } from "react-native";
 import CvService from '../services/CvService';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import * as ExpoFileSystem from 'expo-file-system'
+import { cacheDirectory, copyAsync, getInfoAsync, makeDirectoryAsync, uploadAsync } from 'expo-file-system'
 
 // @ts-ignore
 export default function CV() {
@@ -18,7 +18,7 @@ export default function CV() {
         try {
             const result = await DocumentPicker.getDocumentAsync({
                 type: 'application/pdf',
-                copyToCacheDirectory: true,
+                copyToCacheDirectory: false,
                 multiple: false
             });
             await uploadFile(result)
@@ -30,13 +30,23 @@ export default function CV() {
     const uploadFile = async (result: DocumentResult) => {
         try {
             if (result.type !== "cancel") {
-                await cvService.uploadCv(result.uri);
+                const file = await createCacheFile(result.uri, result.name);                
+                await cvService.uploadCv(file);
             } else {
                 console.log("Cancel")
             }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const createCacheFile = async (uri: string, name: string) => {
+        if (!(await getInfoAsync(cacheDirectory + "uploads/")).exists) {
+            await makeDirectoryAsync(cacheDirectory + "uploads/");
+        }
+        const cacheFilePath = cacheDirectory + "uploads/" + name;
+        await copyAsync({ from: uri, to: cacheFilePath });
+        return cacheFilePath;
     }
 
     return (

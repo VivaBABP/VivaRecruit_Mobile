@@ -14,11 +14,10 @@ export default class CvService {
     const test = await FileSystem.uploadAsync(`${URL}/cv`, data, {
       httpMethod: 'POST',
       fieldName: 'file',
-      uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
       headers: {
         'Authorization': `Bearer ${token}`,
       },
     });
-    console.log(test);
   }
 }
