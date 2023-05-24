@@ -30,13 +30,12 @@ export default function CV() {
     const uploadFile = async (result: DocumentResult) => {
         try {
             if (result.type !== "cancel") {
-                console.log(result.uri);
-                await cvService.uploadCv(result.uri, result.name);
+                await cvService.uploadCv(result.uri);
             } else {
                 console.log("Cancel")
             }
         } catch (error) {
-            console.log(JSON.stringify(error))
+            console.log(error)
         }
     }
 
