@@ -56,6 +56,7 @@ export default function SignIn({navigation}) {
         <ImageBackground style={styles.image} source={require('./../../assets/images/background-gradient-phone.png')}
             resizeMode='cover'>
             <View style={styles.container}>
+                <Text style={{fontFamily: '700'}}>Test Police</Text>
                 <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page de connexion</Animated.Text>
                 <View style={styles.rounded}>
                     <Controller rules={{

@@ -44,8 +44,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "3c46aae7-0e37-43d7-8254-411572feaa47"
+        "projectId": "5cfad71e-b460-42b5-a8d5-28161a5c0d7e"
       }
-    }
+    },
+    "owner": "vivarecruit_mds"
   }
 }
