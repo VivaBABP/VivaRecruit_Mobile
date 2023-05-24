@@ -31,7 +31,9 @@ export default function CV() {
         try {
             if (result.type !== "cancel") {
                 const file = await createCacheFile(result.uri, result.name);                
-                await cvService.uploadCv(file);
+                const res = await cvService.uploadCv(file);
+                console.log(JSON.stringify(res.body));
+                alert(res.body);
             } else {
                 console.log("Cancel")
             }

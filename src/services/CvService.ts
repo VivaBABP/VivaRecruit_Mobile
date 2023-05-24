@@ -9,9 +9,7 @@ export default class CvService {
 
   async uploadCv(data: string): Promise<any> {
     const token = await SecureStore.getItemAsync("token") as string;
-    console.log(`${URL}/cv`);
-
-    const test = await FileSystem.uploadAsync(`${URL}/cv`, data, {
+    return await FileSystem.uploadAsync(`${URL}/cv`, data, {
       httpMethod: 'POST',
       fieldName: 'file',
       uploadType: FileSystem.FileSystemUploadType.MULTIPART,
@@ -19,5 +17,6 @@ export default class CvService {
         'Authorization': `Bearer ${token}`,
       },
     });
+
   }
 }
