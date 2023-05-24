@@ -8,6 +8,7 @@ import CV from "../screens/CV";
 import PageQrCode from "../screens/PageQrCode";
 import JobList from '../screens/JobList';
 import CompanyForm from '../screens/CompanyForm';
+import Interests from '../screens/Interests';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,50 +63,57 @@ export default function TabNavigatorRecruit() {
 }
 
 export function TabNavigatorNotRecruit() {
-    return(
-    <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-            tabBarShowLabel: false,
-            tabBarStyle: {
-                position: 'absolute',
-                bottom: 25,
-                right: 20,
-                left: 20,
-                borderRadius: 20,
-            }
-        }}
-        sceneContainerStyle={{
-            marginBottom: 70
-        }}
-    >
-        <Tab.Screen
-            name='Home'
-            component={Home}
-            options={{
-                tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
+    return (
+        <Tab.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    position: 'absolute',
+                    bottom: 25,
+                    right: 20,
+                    left: 20,
+                    borderRadius: 20,
+                }
             }}
-        />
-        <Tab.Screen
-            name='Contact Form'
-            component={Contact_Form}
-            options={{
-                tabBarIcon: ({ color, size }) => (<Ionicons name="document-text" color={color} size={size} />)
+            sceneContainerStyle={{
+                marginBottom: 70
             }}
-        />
-        <Tab.Screen
-            name='Job List'
-            component={JobList}
-            options={{
-                tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
-            }}
-        />
-        <Tab.Screen
-            name='Cv'
-            component={CV}
-            options={{
-                tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
-            }} />
-    </Tab.Navigator>
+        >
+            <Tab.Screen
+                name='Home'
+                component={Home}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Contact Form'
+                component={Contact_Form}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="document-text" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Job List'
+                component={JobList}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Cv'
+                component={CV}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
+                }} />
+            <Tab.Screen
+                name='Interests'
+                component={Interests}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="flame-outline" color={color} size={size} />)
+                }} />
+
+        </Tab.Navigator>
     )
 }
