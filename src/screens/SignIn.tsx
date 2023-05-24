@@ -2,7 +2,6 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput } from 'react-native-paper'
 import React, { useContext, useState } from 'react'
 import { Controller, useForm } from "react-hook-form";
-import Animated, { FadeInUp, FadeInDown } from "react-native-reanimated";
 import { CredentialDTO } from "../client/recruitBack";
 import { AuthService } from "../services/AuthService";
 import { AuthContext } from "../context/AuthContext";
@@ -36,7 +35,9 @@ export default function SignIn({ navigation }) {
         },
         input: {
             marginBottom: 60,
-            
+            display: 'flex',
+            alignItems: 'flex-start',
+            padding: 0,
         },
         connection: {
             width: '70%',
@@ -49,9 +50,8 @@ export default function SignIn({ navigation }) {
             height: 200,
             marginTop: 80
         },
-        rounded: {
-            width: '70%',
-            borderRadius: 25,
+        inputs: {
+            width: '60%',
             overflow: 'hidden',
             borderStyle: 'solid',
             borderColor: '#0000',
@@ -64,7 +64,7 @@ export default function SignIn({ navigation }) {
                 style={styles.image}
                 source={require('./../../assets/logo/adaptive-icon_vivatech.png')}
             />
-            <View style={styles.rounded}>
+            <View style={styles.inputs}>
                 <Controller rules={{
                     required: true,
                     pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide' }
@@ -80,10 +80,12 @@ export default function SignIn({ navigation }) {
                             value={value}
                             autoComplete={'email'}
                             inputMode={'email'}
+                            mode='outlined'
+                            label="mail"
                         />
                     )} name="email" />
             </View>
-            <View style={styles.rounded}>
+            <View style={styles.inputs}>
                 <Controller rules={{ required: true }}
                     name="password"
                     control={control}
@@ -94,7 +96,8 @@ export default function SignIn({ navigation }) {
                             onBlur={onBlur}
                             onChangeText={onChange}
                             value={value}
-                            secureTextEntry={true} />
+                            secureTextEntry={true}
+                            mode='outlined' />
                     )} />
             </View>
             {(errors.password || errors.email) ? <Text>Champs obligatoires invalide</Text> : <Text>{error}</Text>}
