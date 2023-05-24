@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/Home';
-import PageQrCode from '../../screens/PageQrCode';
+import QrCode from '../../screens/QrCode';
 import CompanyForm from '../../screens/CompanyForm';
 import Job_Form from '../../screens/JobForm';
 
@@ -27,28 +27,28 @@ export default function TabNavigatorRecruit() {
             }}
         >
             <Tab.Screen
-                name='Home'
+                name='Stands'
                 component={Home}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
                 }}
             />
             <Tab.Screen
-                name='Job Form'
+                name='Formulaire de fiche de poste'
                 component={Job_Form}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="file-tray-full" color={color} size={size} />)
                 }}
             />
             <Tab.Screen
-                name='QrCode'
-                component={PageQrCode}
+                name='Scannez les informations de contact'
+                component={QrCode}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="qr-code-outline" color={color} size={size} />)
                 }}
             />
             <Tab.Screen
-                name='Company form'
+                name="Formulaire d'entreprise"
                 component={CompanyForm}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="business-outline" color={color} size={size} />)

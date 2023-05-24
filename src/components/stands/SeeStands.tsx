@@ -3,11 +3,12 @@ import {FlatList, View} from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {GetPanelDto} from "../../client/recruitBack";
 import {PanelService} from "../../services/PanelService";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function SeeStands() {
 
     const {disconnect} = useContext(AuthContext);
+
     const logOut = async () => {
         await disconnect()
     };
