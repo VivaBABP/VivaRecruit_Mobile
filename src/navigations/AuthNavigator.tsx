@@ -10,9 +10,12 @@ export function AuthNavigator() {
 
     return (
         <Stack.Navigator initialRouteName='SignIn'>
-            <Stack.Screen name='SignIn' component={SignIn}/>
-            <Stack.Screen name='SignUp' component={SignUp}/>
-            <Stack.Screen name='ActivationCode' component={ActivationCode}/>
+            <Stack.Screen name='SignIn' component={SignIn} options={{ title: 'Se connecter'
+            }}/>
+            <Stack.Screen name='SignUp' component={SignUp} options={{ title: "S'inscrire"
+            }}/>
+            <Stack.Screen name='ActivationCode' component={ActivationCode}options={{ title: 'Validation du Compte'
+            }}/>
         </Stack.Navigator>
     )
 }
