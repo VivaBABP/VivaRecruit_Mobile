@@ -1,8 +1,9 @@
-import React, {useContext, useEffect, useState} from "react";
 import {PanelService} from "../../services/PanelService";
+import React, { useState} from "react";
 import {GetPanelDto} from "../../client/recruitBack";
 import {FlatList, View, StyleSheet} from "react-native";
 import {Button, Card, Divider, Text} from "react-native-paper";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function SuggestedStands() {
 
@@ -10,11 +11,11 @@ export default function SuggestedStands() {
 
     const [panels, setPanels] = useState<GetPanelDto[]>([])
 
-    useEffect(() => {
-        getPanels().then(r => {console.log("test")});
-    }, [])
+    useFocusEffect(() => {
+        getPanels();
+    })
 
-    const getPanels = async() => {
+    const getPanels = () => {
         panelService.suggest().then((data) => {
             setPanels(data);
         }).catch((err) => {

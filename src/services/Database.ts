@@ -1,7 +1,8 @@
 import * as SQLite from "expo-sqlite";
 import { ResultSet, SQLResultSet, WebSQLDatabase } from "expo-sqlite";
+import {InformationUserDTO} from "../client/recruitBack";
 
-export var db = SQLite.openDatabase('test.db','2');
+export var db = SQLite.openDatabase('test.db','3');
 
 
 // à ajouter après la validation du compte, n'oublie pas de d'ajouter aussi la fonction create candidat
@@ -44,7 +45,7 @@ export function getInfoUsersByMail(infosUser: { mail: string, nom: string, preno
     })
 }
 
-export function insertInfoUser(infosUser: { mail: string, nom: string, prenom: string, phoneNumber: string, lastDiploma: string }) {
+export function insertInfoUser(infosUser: InformationUserDTO) {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql('INSERT INTO infoUser(mail, nom, prenom, phoneNumber, lastDiploma) VALUES (?1,?2,?3,?4,?5)', [infosUser.mail, infosUser.nom, infosUser.prenom, infosUser.phoneNumber, infosUser.lastDiploma],
@@ -71,10 +72,10 @@ export function createInfoUserCandidat(infosUser: { mail: string }) {
     })
 }
 
-export function updateInfoUser(infosUser: { mail: string, nom: string, prenom: string, phoneNumber: string, lastDiploma: string }) {
+export function updateInfoUser(infosUser: InformationUserDTO) {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
-            tx.executeSql('UPDATE infoUser SET mail = ?1, nom = ?2, prenom = ?3, phoneNumber = ?4, lastDiploma = ?5 WHERE id = ?6', [infosUser.mail, infosUser.nom, infosUser.prenom, infosUser.phoneNumber, infosUser.lastDiploma, 1],
+            tx.executeSql('UPDATE infoUser SET mail = ?1, nom = ?2, prenom = ?3, phoneNumber = ?4, lastDiploma = ?5 WHERE id = ?6', [infosUser.mail, infosUser.nom, infosUser.prenom, infosUser.phoneNumber, infosUser.lastDiploma, 0],
                 (transaction, resultSet) => {
                     resolve(resultSet);
                 }), (transaction: any, error: any) => {

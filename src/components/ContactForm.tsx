@@ -1,48 +1,53 @@
 import {ScrollView, Text, View, StyleSheet} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
-import React, {useEffect} from "react";
-import {createTableInfoUser, getInfoUsers, updateInfoUser} from "../services/Database";
+import React from "react";
+import {createTableInfoUser, getInfoUsers, insertInfoUser, updateInfoUser} from "../services/Database";
 import Constants from "expo-constants";
+import {AccountsService} from "../services/AccountsService";
+import {InformationUserDTO} from "../client/recruitBack";
+import {useFocusEffect} from "@react-navigation/native";
 
 // Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
 // La ligne sera créée lors de la création du compte avec le mail uniquement.
 
 export default function ContactForm() {
-    const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm({
-        defaultValues: {
-            mail: '',
-            nom: '',
-            prenom: '',
-            phoneNumber: '',
-            lastDiploma: ''
-        }
-    });
+    const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm<InformationUserDTO>();
 
-    useEffect(() => {
+    const accountService = new AccountsService;
+
+    let infos = false;
+
+    useFocusEffect(() => {
         createTableInfoUser()
         getInfoUsers().then((res) =>{
-            console.log(res.rows.length, ' nb items : ', res.rows._array);
+            if(res.rows.length > 0) {
+                const user = res.rows.item(0) as InformationUserDTO;
+                console.log(user);
+                setValue('nom', user.nom);
+                setValue('prenom', user.prenom);
+                setValue('mail', user.mail);
+                setValue('phoneNumber', user.phoneNumber);
+                setValue('lastDiploma', user.lastDiploma);
+            }
+            res.rows.length > 0 ? infos = true: infos= false;
+            console.log(res.rows.length);
         }).catch((error) => {
             console.log(error.message, " erreurs");
-        })
+        });
     })
 
-    const save = (data: { mail: string, nom: string, prenom: string, phoneNumber: string, lastDiploma: string }) => {
-        console.log('avant update');
-        updateInfoUser(data).then((res)=> {
-            console.log('je passe dans update');
-            console.log(res);
-        }).catch((error) =>{
-            console.log('error',error.message);
-        });
-        getInfoUsers().then((res) => {
-            for (let i = 0; i < res.rows.length; i++) {
-                console.log(res.rows.item(i));
-            }
-        }).catch((error) => {
-            console.error('error: ',error.message);
-        });
+    const save = async (data: InformationUserDTO) => {
+        if(infos) {
+            updateInfoUser(data).then((res) => {
+                console.log(res);
+            }).catch((error) => {
+                console.log('error', error.message);
+            });
+        } else {
+            await insertInfoUser(data);
+        }
+        await accountService.updateInfoUser(data);
     };
 
     const styles = StyleSheet.create({

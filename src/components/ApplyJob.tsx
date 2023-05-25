@@ -1,21 +1,22 @@
 import { View, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { JobService } from '../services/JobService'
-import { Card, Divider, Text } from 'react-native-paper'
-import { CreateJobDTO } from '../client/recruitBack'
+import {Button, Card, Text } from 'react-native-paper'
+import { CreateJobDTO, UpdateJobDTO } from '../client/recruitBack'
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function ApplyJob() {
   const jobService = new JobService
 
-  const [Jobs, setJobs] = useState<CreateJobDTO[]>([])
+  const [Jobs, setJobs] = useState<UpdateJobDTO[]>([])
 
-  useEffect(() => {
+  useFocusEffect(() => {
     getJobs();
-  }, [])
+  })
 
 
   const getJobs = async () => {
-    jobService.getJobs()
+    jobService.getAppliedJobs()
       .then((data) => {
         setJobs(data);
       })
@@ -23,15 +24,13 @@ export default function ApplyJob() {
         alert(e.response.message)
       })
   }
-  // const getJobs = async () => {
-  //   jobService.getAppliedJobs()
-  //     .then((data) => {
-  //       setJobs(data);
-  //     })
-  //     .catch((e) => {
-  //       alert(e.response.message)
-  //     })
-  // }
+
+  const deleteApply = async (idJob: number) => {
+      jobService.deleteApplyJob(idJob).then(()=>{
+          alert("Job supprimé");
+          getJobs();
+      });
+  }
 
   return (
     <View>
@@ -40,20 +39,16 @@ export default function ApplyJob() {
         renderItem={({ item, index }) => (
           <Card style={styles.card} key={index}>
             <Card.Content>
-              <Text style={styles.text} variant="titleLarge">Poste: {item.jobName} </Text>
-              <Divider />
-              <Text style={styles.text} variant="bodyMedium">Description: {item.jobDescription} </Text>
-              <Text style={styles.text} variant='bodySmall'>Compétence: {item.skillsNeeded} </Text>
+              <Text variant="titleLarge" style={styles.text}> {item.jobName} </Text>
+              <Text variant="bodyMedium" style={styles.text}> {item.jobDescription} </Text>
+              <Text variant='bodySmall' style={styles.text}> {item.skillsNeeded} </Text>
             </Card.Content>
+              <Card.Actions>
+                  <Button buttonColor={'#ff2200'} textColor={'#FFFFFF'} onPress={() => deleteApply(item.jobId)}>Annuler Candidature</Button>
+              </Card.Actions>
           </Card>
         )}
       />
-    </View>
-  )
-
-  return (
-    <View>
-      <Text> Salut </Text>
     </View>
   )
 }
