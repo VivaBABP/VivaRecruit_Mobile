@@ -1,17 +1,17 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {createTableInfoUser, getInfoUsers} from "../services/Database";
 import {View, StyleSheet} from "react-native";
 import React from "react";
 import QRCode from "react-native-qrcode-svg";
 import {Text} from "react-native-paper";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function GenerateQrCode() {
     const [valueQrCode, setValueQrCode] = useState('test');
     const [userExist, setUserExist] = useState(false);
 
-    useEffect(() => {
+    useFocusEffect(() => {
         createTableInfoUser();
-
         getInfoUsers().then((res) => {
             if(res.rows.length > 0){
                 setUserExist(true);
