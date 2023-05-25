@@ -48,7 +48,7 @@ export default function SearchStudents({ navigation }) {
         renderItem={({ item }) => (
           <Card style={styles.card} key={item.id} onPress={async () => await verify(item.id.toString()) ? navigation.navigate('ViewPdf', item.id) : null}>
             <Card.Content>
-              <Text style={styles.text} variant="titleLarge"> {item.email} {item.id} </Text>
+              <Text style={styles.text} variant="titleLarge"> {item.email} </Text>
               <Divider />
               <Text style={styles.text} variant="bodyMedium"> {item.name} </Text>
               <Text style={styles.text} variant='bodySmall'> {item.lastName} </Text>
