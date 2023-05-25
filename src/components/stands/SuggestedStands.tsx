@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import {PanelService} from "../../services/PanelService";
 import {GetPanelDto} from "../../client/recruitBack";
-import {FlatList, View} from "react-native";
-import {Button, Card, Text} from "react-native-paper";
+import {FlatList, View, StyleSheet} from "react-native";
+import {Button, Card, Divider, Text} from "react-native-paper";
 
 export default function SuggestedStands() {
 
@@ -20,6 +20,7 @@ export default function SuggestedStands() {
         }).catch((err) => {
             setPanels(err.response);
         })
+ 
     }
 
     return (
@@ -27,16 +28,34 @@ export default function SuggestedStands() {
             <FlatList
                 data={panels}
                 renderItem={({ item, index }) => (
-                    <Card style={{ margin: 13 }} key={index}>
+                    <Card style={styles.card} key={index}>
                         <Card.Content>
-                            <Text variant="titleLarge"> Nom de stand : {item.panelName} </Text>
-                            <Text variant="bodyMedium"> Nom de l'entreprise : {item.companyName} </Text>
-                            <Text variant='bodySmall'> Type de stand : {item.interestLabel} </Text>
+                            <Text style={styles.text} variant="titleLarge"> Nom de stand : {item.panelName} </Text>
+                            <Divider/>
+                            <Text style={styles.text} variant="bodyMedium"> Nom de l'entreprise : {item.companyName} </Text>
+                            <Text style={styles.text} variant='bodySmall'> Type de stand : {item.interestLabel} </Text>
                         </Card.Content>
                     </Card>
                 )}
             />
-            {!panels  && <Text>Aucun stand trouvé</Text>}
+            {panels.length == 0 && <Text style={styles.textStand}>Veuillez choisir des intérêts</Text>}
         </View>
     )
 }
+const styles = StyleSheet.create({
+    card: {
+      margin: 13,
+      backgroundColor: '#EC4D0C',
+      borderWidth: 1,
+     borderColor: 'white'
+    },
+    text:{
+      fontFamily: '700',
+      color: 'white',
+    },
+    textStand:{
+        fontFamily: '700',
+        marginTop: 50,
+        textAlign: 'center',
+    }
+  })

@@ -84,13 +84,6 @@ export function TabNavigatorNotRecruit() {
                     tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
                 }}
             />
-            <Tab.Screen
-                name='Interets'
-                component={Interests}
-                options={{
-                    tabBarIcon: ({ color, size }) => (<Ionicons name="card-outline" color={color} size={size} />)
-                }}
-            />
         </Tab.Navigator>
     )
 }
