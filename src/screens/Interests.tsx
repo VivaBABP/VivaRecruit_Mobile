@@ -99,7 +99,7 @@ export default function Interests({ navigation }) {
         .then(() => {
             const filteredArray = value.filter(v => v !== id.toString());
             setValue(filteredArray);
-            setvalueDb(filteredArray);
+            setvalueDb(filteredArray);            
         })
         .catch((e) => {
             console.log(JSON.stringify(e));
