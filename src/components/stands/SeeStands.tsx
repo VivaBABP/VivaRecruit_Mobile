@@ -19,7 +19,7 @@ export default function SeeStands() {
         panelService.findAll().then((data) => {
             setPanels(data);
         }).catch((error) => {
-            console.log(error);
+            console.log(JSON.stringify(error));
         })
     }
 
