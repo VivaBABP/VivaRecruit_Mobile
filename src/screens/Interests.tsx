@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from 'react-native'
 import { Text, Button, TextInput } from 'react-native-paper'
 import React, { useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from "react-hook-form";
@@ -18,10 +18,15 @@ export default function Interests({ navigation }) {
 
     const [selected, setSelected] = useState("");
     const [data, setData] = useState<InterestInterface[]>([]);
+
     const interestsService = new InteretsService
+
+
+   
 
     useEffect(() => {
         findAll();
+        // getInteretsUser();
     }, []);
 
 
@@ -42,22 +47,26 @@ export default function Interests({ navigation }) {
                 console.log(JSON.stringify(e))
             })
     }
-
+    // const test = GetInterestDto[];
+    // const getInteretsUser = () => {
+    //   test = interestsService.getInterestFromAccount()
+        
+    // }
 
 
     const dbStuff = () => {
-       const ISelect = Array.from(selected)
+        const ISelect = Array.from(selected)
         console.log(ISelect);
         ISelect.forEach(selected => interestsService.addInterestToAccount({ id: +selected } as AddInterestDto)
-        .then((ISelect) =>{
-            console.log("Marche");
-        })
-        .catch((err) => {
-            console.log(JSON.stringify(err));
-            
-        })
+            .then((selected) => {
+                console.log("Marche");
+            })
+            .catch((err) => {
+                console.log(JSON.stringify(err));
+
+            })
         );
-        
+
 
     }
 
@@ -65,31 +74,54 @@ export default function Interests({ navigation }) {
         container: {
             flex: 2,
             flexDirection: 'column',
-            gap: 40,
-            alignItems: 'center',
-            margin: 40
+            fontFamily: '700'
         },
-        input: {},
+        input: {
+            marginBottom: 30,
+            display: 'flex',
+            alignItems: 'flex-start',
+            padding: 0,
+            fontFamily: '700'
+        },
         connection: {
-            width: '70%'
+            width: '70%',
+            marginBottom: 50
         },
         image: {
             flex: 1,
-            justifyContent: 'center'
+            width: 250,
+            height: 200,
+            marginTop: 50
         },
-        rounded: {
-            width: '70%',
-            borderRadius: 25,
+        inputs: {
+            width: '60%',
             overflow: 'hidden',
             borderStyle: 'solid',
             borderColor: '#0000',
         },
-
-
-
+        button: {
+            marginBottom: 30,
+            backgroundColor: '#EC4D0C',
+            fontFamily: '700'
+        },
+        checkboxContainer: {
+            marginBottom: 30,
+            flexDirection: 'row',
+        },
+        checkbox: {
+            alignSelf: 'center',
+        },
+        align: {
+            alignItems: 'center'
+        }
     })
 
+
+
+   
+
     return (
+        <ScrollView style={styles.container}>
         <View style={{ paddingHorizontal: 20, paddingVertical: 50, flex: 1 }}>
             <MultipleSelectList
                 setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
@@ -98,14 +130,15 @@ export default function Interests({ navigation }) {
                 save="key"
                 label="intérêts"
                 placeholder='sélectionner vos intérêts'
-                boxStyles={{ backgroundColor: 'blueviolet', borderColor: 'black' }}
+                boxStyles={{ backgroundColor: '#EC4D0C', borderColor: 'black' }}
                 inputStyles={{ color: 'white' }}
-                dropdownStyles={{ backgroundColor: 'blueviolet', borderColor: 'black' }}
+                dropdownStyles={{ backgroundColor: '#EC4D0C', borderColor: 'black' }}
                 dropdownTextStyles={{ color: 'white' }}
             />
+        
             <Button onPress={dbStuff}>Valider</Button>
         </View>
-
+        </ScrollView>
 
     )
 }

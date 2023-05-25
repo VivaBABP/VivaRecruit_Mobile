@@ -14,4 +14,8 @@ export class InteretsService {
         return this.interests.findAll();
 
     }
+
+    getInterestFromAccount(): Promise<GetInterestDto[]> {
+        return this.interests.getInterestFromAccount();
+    } 
 }
