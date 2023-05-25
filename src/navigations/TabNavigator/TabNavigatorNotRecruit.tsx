@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/Home';
 import JobList from '../../screens/JobList';
 import CV from '../../screens/CV';
-import CandidateInfo from '../../screens/CandidateInfo';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
+import CandidateInfo from '../../screens/CandidateInfo';
+import Interests from '../../screens/Interests';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,7 @@ export function TabNavigatorNotRecruit() {
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
+                tabBarActiveTintColor: '#EC4D0C',
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
@@ -80,6 +82,13 @@ export function TabNavigatorNotRecruit() {
                 component={CV}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Interets'
+                component={Interests}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="card-outline" color={color} size={size} />)
                 }}
             />
         </Tab.Navigator>
