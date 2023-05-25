@@ -1,9 +1,8 @@
-import { ImageBackground, StyleSheet, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput, Checkbox } from 'react-native-paper'
 import React, {useContext} from 'react'
 import { Controller, useForm } from "react-hook-form";
 import Animated, { FadeInUp, FadeInDown, Value } from "react-native-reanimated";
-import * as SQLite from 'expo-sqlite'
 import { ValidationCodeDTO } from '../client/recruitBack';
 import { AuthService } from '../services/AuthService';
 import {createInfoUserCandidat} from "../services/Database";
@@ -39,36 +38,15 @@ export default function ActivationCode({ route, navigation }) {
             })
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 2,
-            flexDirection: 'column',
-            gap: 40,
-            alignItems: 'center',
-        },
-        input: {},
-        connection: {
-            width: '70%'
-        },
-        image: {
-            flex: 1,
-            justifyContent: 'center'
-        },
-        rounded: {
-            width: '70%',
-            borderRadius: 25,
-            overflow: 'hidden',
-            borderStyle: 'solid',
-            borderColor: '#0000',
-        }
-    })
-
     return (
-        <ImageBackground style={styles.image} source={require('./../../assets/images/background-gradient-phone.png')}
-            resizeMode='cover'>
-            <View style={styles.container}>
-                <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page d'activation</Animated.Text>
-                <View style={styles.rounded}>
+        <ScrollView style={styles.container}>
+            <View style={styles.align}>
+                <Image
+                    style={styles.image}
+                    source={require('./../../assets/logo/adaptive-icon_vivatech.png')}
+                />
+                <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Veuillez renseignez le code reçu par mail</Animated.Text>
+                <View style={styles.inputs}>
                     <Controller rules={{ required: true }}
                         name="code"
                         control={control}
@@ -80,16 +58,53 @@ export default function ActivationCode({ route, navigation }) {
                                 onChangeText={onChange}
                                 keyboardType='numeric'
                                 value={value}
+                                mode='outlined'
                             />
                         )}
                     />
                 </View>
                 {(errors.code) && <Text>Champ obligatoire invalide</Text>}
 
-                <Button style={styles.connection} onPress={handleSubmit(dbStuff)} mode='contained'>Valider l'inscription
+                <Button style={styles.button} onPress={handleSubmit(dbStuff)} mode='contained'>Valider l'inscription
                 </Button>
 
             </View>
-        </ImageBackground>
+        </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 2,
+        flexDirection: 'column',
+    },
+    input: {
+        marginBottom: 30,
+        display: 'flex',
+        alignItems: 'flex-start',
+        padding: 0,
+    },
+    connection: {
+        width: '70%',
+        marginBottom: 50
+    },
+    image: {
+        flex: 1,
+        width: 250,
+        height: 200,
+        marginTop: 50
+    },
+    inputs: {
+        width: '60%',
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
+    },
+    button: {
+        marginBottom: 30,
+    backgroundColor: '#EC4D0C'
+    },
+    align: {
+        alignItems: 'center'
+    }
+})
