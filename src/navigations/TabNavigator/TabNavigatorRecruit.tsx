@@ -1,18 +1,29 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react'
+import React, { useContext } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/Home';
 import QrCode from '../../screens/QrCode';
 import CompanyForm from '../../screens/CompanyForm';
 import Job_Form from '../../screens/JobForm';
+import { AuthContext } from '../../context/AuthContext';
+import { LinearGradient } from 'expo-linear-gradient';
+import { TouchableOpacity, Image } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigatorRecruit() {
+
+    const {disconnect} = useContext(AuthContext);
+
+    const logOut = async () => {
+        await disconnect()
+    };
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
+                tabBarActiveTintColor: '#EC4D0C',
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
@@ -20,7 +31,25 @@ export default function TabNavigatorRecruit() {
                     right: 20,
                     left: 20,
                     borderRadius: 20,
-                }
+                },
+                headerBackground: () => (
+                    <LinearGradient
+                        colors={['#6750A4', '#B80F7F', '#EC4D0C',]}
+                        style={{ flex: 1 }}
+                    />
+                ),
+                headerTintColor: '#fff',
+                headerRight: () => (
+                    <TouchableOpacity onPress={logOut}>
+                        <Ionicons style={{ marginRight: 15 }} name="exit-outline" color={'white'} size={40} />
+                    </TouchableOpacity>
+                ),
+                headerLeft: () => (
+                    <Image
+                    source={require('../../../assets/logo/logo_vivatech_icon.png')}
+                    style={{ width: 45, height: 45, marginLeft: 10 }}
+                    />
+                )
             }}
             sceneContainerStyle={{
                 marginBottom: 70

@@ -1,9 +1,10 @@
-import { View, useWindowDimensions } from 'react-native'
+import { View, useWindowDimensions, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { Text } from 'react-native-paper'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import AllJob from '../components/AllJob';
 import ApplyJob from '../components/ApplyJob';
+import { color } from 'react-native-reanimated';
 
 
 export default function JobList() {
@@ -30,20 +31,29 @@ export default function JobList() {
       initialLayout={{ width: layout.width }}
       renderTabBar={
         (props) => (
-          <TabBar
+          <TabBar 
             {...props}
             renderLabel={({ route }) => (
-              <Text style={{ color: 'black' }}>
+              <Text style={styles.title}>
                 {route.title}
               </Text>
             )}
+            indicatorStyle={{ backgroundColor: '#EC4D0C' }}
             style={{
               backgroundColor: 'white'
-
             }}
+            
           />
         )
       }
     />
   )
 }
+
+const styles = StyleSheet.create({
+  title:{
+    fontFamily: '700',
+    color: 'black'
+  },
+  
+})
