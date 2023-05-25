@@ -58,6 +58,7 @@ export default function AllJob() {
               <Text style={styles.text} variant="bodyMedium">Description: {item.jobDescription} </Text>
 
               <Text style={styles.text} variant='bodySmall'>Compétence: {item.skillsNeeded} </Text>
+                <Text style={styles.text} variant='bodySmall'>Email recruteur: {item.email}</Text>
             </Card.Content>
               <Card.Actions>
                   { !item.applied ? <Button onPress={() => postuler(item.jobId)}>Postuler</Button> : <Text>Postulé</Text> }

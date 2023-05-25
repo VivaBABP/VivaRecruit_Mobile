@@ -1,7 +1,7 @@
 import {ScrollView, Text, View, StyleSheet} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {Button, TextInput} from "react-native-paper";
-import React, {useEffect} from "react";
+import React from "react";
 import {createTableInfoUser, getInfoUsers, insertInfoUser, updateInfoUser} from "../services/Database";
 import Constants from "expo-constants";
 import {AccountsService} from "../services/AccountsService";

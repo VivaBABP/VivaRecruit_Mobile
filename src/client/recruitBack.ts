@@ -3019,6 +3019,7 @@ export class GetJobsDTO implements IGetJobsDTO {
     jobDescription!: string;
     skillsNeeded!: string;
     applied!: boolean;
+    email!: string;
 
     [key: string]: any;
 
@@ -3042,6 +3043,7 @@ export class GetJobsDTO implements IGetJobsDTO {
             this.jobDescription = _data["jobDescription"];
             this.skillsNeeded = _data["skillsNeeded"];
             this.applied = _data["applied"];
+            this.email = _data["email"];
         }
     }
 
@@ -3063,6 +3065,7 @@ export class GetJobsDTO implements IGetJobsDTO {
         data["jobDescription"] = this.jobDescription;
         data["skillsNeeded"] = this.skillsNeeded;
         data["applied"] = this.applied;
+        data["email"] = this.email;
         return data;
     }
 }
@@ -3073,6 +3076,7 @@ export interface IGetJobsDTO {
     jobDescription: string;
     skillsNeeded: string;
     applied: boolean;
+    email: string;
 
     [key: string]: any;
 }
