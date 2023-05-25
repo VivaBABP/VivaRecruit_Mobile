@@ -24,6 +24,7 @@ export default function TabNavigatorRecruit() {
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
+                tabBarActiveTintColor: '#EC4D0C',
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
