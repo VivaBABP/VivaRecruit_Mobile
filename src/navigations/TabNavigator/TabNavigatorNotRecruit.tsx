@@ -24,6 +24,7 @@ export function TabNavigatorNotRecruit() {
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
+                tabBarActiveTintColor: '#EC4D0C',
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
@@ -87,7 +88,7 @@ export function TabNavigatorNotRecruit() {
                 name='Interets'
                 component={Interests}
                 options={{
-                    tabBarIcon: ({ color, size }) => (<Ionicons name="reader" color={color} size={size} />)
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="card-outline" color={color} size={size} />)
                 }}
             />
         </Tab.Navigator>
