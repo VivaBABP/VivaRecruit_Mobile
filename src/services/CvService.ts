@@ -40,4 +40,8 @@ export default class CvService {
   ifExist(): Promise<Boolean> {
     return this.cvClient.exist();
   }
+
+  ifExistUser(id: string): Promise<Boolean> {
+    return this.cvClient.existFromUser(id)
+  }
 }

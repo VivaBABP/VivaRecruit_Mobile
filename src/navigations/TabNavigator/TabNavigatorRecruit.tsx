@@ -8,6 +8,7 @@ import Job_Form from '../../screens/JobForm';
 import { AuthContext } from '../../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity, Image } from 'react-native';
+import SearchStudents from '../../screens/SearchStudents';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +61,13 @@ export default function TabNavigatorRecruit() {
                 component={Home}
                 options={{
                     tabBarIcon: ({ color, size }) => (<Ionicons name="home" color={color} size={size} />)
+                }}
+            />
+            <Tab.Screen
+                name='Etudiant'
+                component={SearchStudents}
+                options={{
+                    tabBarIcon: ({ color, size }) => (<Ionicons name="person-outline" color={color} size={size} />)
                 }}
             />
             <Tab.Screen
