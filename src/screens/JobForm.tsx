@@ -1,31 +1,65 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import {View, Text, StyleSheet, ScrollView, Switch} from 'react-native'
+import React, {useState} from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Constants from 'expo-constants'
 import { Button, TextInput } from 'react-native-paper'
-import { CreateJobDTO } from '../client/recruitBack'
+import {CreateJobDTO, UpdateJobDTO} from '../client/recruitBack'
 import { JobService } from '../services/JobService'
+import {PaperSelect} from "react-native-paper-select";
+import {useFocusEffect} from "@react-navigation/native";
+import {ListItem} from "react-native-paper-select/lib/typescript/interface/paperSelect.interface";
 
 export default function JobForm() {
 
-  const authService = new JobService;
+  const jobService = new JobService;
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const { handleSubmit, setValue, control, reset, formState: { errors } } = useForm<CreateJobDTO>();
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+    const [idJob, setIdJob] = useState<number>(0);
+    const [jobs, setJobs] = useState<ListItem[]>([]);
 
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<CreateJobDTO>();
-
+    useFocusEffect(() => {
+        getJobs();
+    })
   const onSubmit = (data: CreateJobDTO) => {
-    authService.createJob(data)
+      if(isSwitchOn){
+    jobService.createJob(data)
       .then((data) => {
-        // à changer quand on refera l'interface
         alert(data)
       })
       .catch((e) => {
         console.log(e.response.message);
-      })
+      })}
+      else {
+          jobService.updateJob({jobId: +idJob, jobName: data.jobName, skillsNeeded: data.skillsNeeded, jobDescription: data.jobDescription} as UpdateJobDTO)
+              .then((res) =>{alert('Job modifié')}).catch((err) => {alert(err)});
+      }
   };
+
+    const getJobs = () => {
+        jobService.getJobs().then((res) => {
+            jobs.pop();
+            res.forEach((e) => {
+                jobs.push({_id: e.jobId.toString(), value: e.jobName});
+            })
+        })
+    }
+
+    const setForm = (id: any) => {
+        setIdJob(id.selectedList.at(0)._id);
+        jobService.getJob(idJob.toString()).then((res) => {
+            setValue('jobName', res.jobName);
+            setValue('jobDescription', res.jobDescription);
+            setValue('skillsNeeded', res.skillsNeeded);
+        })
+    }
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.label}>Intitulé du poste:</Text>
+        <Text>Créer un poste :</Text>
+        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+        {!isSwitchOn && <PaperSelect label="Postes" arrayList={jobs} value={''} selectedArrayList={jobs} multiEnable={false} onSelection={(id: any) => setForm(id)}/>}
+        <Text style={styles.label}>Intitulé du poste:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (

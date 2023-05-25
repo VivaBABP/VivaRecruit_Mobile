@@ -9,6 +9,18 @@ export class JobService {
     return this.jobClient.getJobs();
   }
 
+  getJob(id: string): Promise<UpdateJobDTO> {
+    return this.jobClient.getJob(id);
+  }
+
+  createJob(job: CreateJobDTO): Promise<string> {
+    return this.jobClient.createJob(job);
+  }
+
+  updateJob(job: UpdateJobDTO): Promise<void> {
+    return this.jobClient.updateJob(job);
+  }
+
   getAppliedJobs(): Promise<UpdateJobDTO[]> {
     return this.jobClient.getAppliedJobs();
   }
