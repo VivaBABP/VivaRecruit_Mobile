@@ -1,18 +1,20 @@
 import { View, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Card, Divider, Text } from 'react-native-paper'
+import { Button, Card, Divider, Text } from 'react-native-paper'
 import { JobService } from '../services/JobService'
-import { UpdateJobDTO } from '../client/recruitBack'
+import {GetJobsDTO, UpdateJobDTO} from '../client/recruitBack'
+import {err} from "react-native-svg/lib/typescript/xml";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function AllJob() {
 
   const jobService = new JobService
 
-  const [Jobs, setJobs] = useState<UpdateJobDTO[]>([])
+  const [Jobs, setJobs] = useState<GetJobsDTO[]>([])
 
-  useEffect(() => {
+  useFocusEffect(() => {
     getJobs();
-  }, [])
+  })
 
 
   const getJobs = async () => {
@@ -25,6 +27,25 @@ export default function AllJob() {
       })
   }
 
+    const getAppliedJob = async () => {
+        jobService.getJobs()
+            .then((data) => {
+                setJobs(data);
+            })
+            .catch((e) => {
+                alert(e.response.message)
+            })
+    }
+
+  const postuler = async (idJob: number) => {
+      jobService.applyJob(idJob).then((res)=> {
+          alert("Job postulé ");
+      }).catch((err) => {
+          if(err.status == 201)
+              alert("Job postulé ");
+      });
+  }
+
   return (
     <View>
       <FlatList
@@ -35,9 +56,13 @@ export default function AllJob() {
               <Text style={styles.text} variant="titleLarge">Poste: {item.jobName} </Text>
               <Divider />
               <Text style={styles.text} variant="bodyMedium">Description: {item.jobDescription} </Text>
-              
+
               <Text style={styles.text} variant='bodySmall'>Compétence: {item.skillsNeeded} </Text>
+                <Text style={styles.text} variant='bodySmall'>Email recruteur: {item.email}</Text>
             </Card.Content>
+              <Card.Actions>
+                  { !item.applied ? <Button onPress={() => postuler(item.jobId)}>Postuler</Button> : <Text>Postulé</Text> }
+              </Card.Actions>
           </Card>
         )}
       />
@@ -57,4 +82,4 @@ const styles = StyleSheet.create({
     color: 'white',
   }
 })
-  
+

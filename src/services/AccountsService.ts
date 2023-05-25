@@ -7,4 +7,8 @@ export class AccountsService {
   getStudents(): Promise<InformationStudentDTO[]> {
     return this.accountsControllerClient.getStudents();
   }
+
+  updateInfoUser(info: InformationUserDTO): Promise<void> {
+    return this.accountsControllerClient.addUserInformation(info);
+  }
 }
