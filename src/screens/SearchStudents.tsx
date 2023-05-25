@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Card, Text } from 'react-native-paper'
 import { AccountsService } from '../services/AccountsService'
 import { InformationStudentDTO } from '../client/recruitBack'
-import CvService from '../services/CvService'
-
-import base64url from "base64url";
 
 // @ts-ignore
 export default function SearchStudents({ navigation }) {
@@ -40,6 +37,7 @@ export default function SearchStudents({ navigation }) {
               <Text variant="titleLarge"> {item.email} </Text>
               <Text variant="bodyMedium"> {item.name} </Text>
               <Text variant='bodySmall'> {item.lastName} </Text>
+              <Text variant='bodySmall'> s </Text>
             </Card.Content>
           </Card>
         )}

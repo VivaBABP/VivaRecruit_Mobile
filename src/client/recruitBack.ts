@@ -527,7 +527,7 @@ export class JobsControllerClient {
         return Promise.resolve<void>(null as any);
     }
 
-    getJobs( cancelToken?: CancelToken | undefined): Promise<UpdateJobDTO[]> {
+    getJobs( cancelToken?: CancelToken | undefined): Promise<GetJobsDTO[]> {
         let url_ = this.baseUrl + "/jobs";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -551,7 +551,7 @@ export class JobsControllerClient {
         });
     }
 
-    protected processGetJobs(response: AxiosResponse): Promise<UpdateJobDTO[]> {
+    protected processGetJobs(response: AxiosResponse): Promise<GetJobsDTO[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -568,69 +568,18 @@ export class JobsControllerClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(UpdateJobDTO.fromJS(item));
+                    result200!.push(GetJobsDTO.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<UpdateJobDTO[]>(result200);
+            return Promise.resolve<GetJobsDTO[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UpdateJobDTO[]>(null as any);
-    }
-
-    getJob(id: string, cancelToken?: CancelToken | undefined): Promise<UpdateJobDTO> {
-        let url_ = this.baseUrl + "/jobs/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetJob(_response);
-        });
-    }
-
-    protected processGetJob(response: AxiosResponse): Promise<UpdateJobDTO> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = UpdateJobDTO.fromJS(resultData200);
-            return Promise.resolve<UpdateJobDTO>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<UpdateJobDTO>(null as any);
+        return Promise.resolve<GetJobsDTO[]>(null as any);
     }
 
     applyJob(body: CreateApplyDto, cancelToken?: CancelToken | undefined): Promise<void> {
@@ -786,6 +735,57 @@ export class JobsControllerClient {
         }
         return Promise.resolve<void>(null as any);
     }
+
+    getJob(id: string, cancelToken?: CancelToken | undefined): Promise<UpdateJobDTO> {
+        let url_ = this.baseUrl + "/jobs/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetJob(_response);
+        });
+    }
+
+    protected processGetJob(response: AxiosResponse): Promise<UpdateJobDTO> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = UpdateJobDTO.fromJS(resultData200);
+            return Promise.resolve<UpdateJobDTO>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UpdateJobDTO>(null as any);
+    }
 }
 
 export class CvControllerClient {
@@ -858,6 +858,115 @@ export class CvControllerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    exist( cancelToken?: CancelToken | undefined): Promise<boolean> {
+        let url_ = this.baseUrl + "/cv/exist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processExist(_response);
+        });
+    }
+
+    protected processExist(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
+    }
+
+    existFromUser(id: string, cancelToken?: CancelToken | undefined): Promise<boolean> {
+        let url_ = this.baseUrl + "/cv/exist/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processExistFromUser(_response);
+        });
+    }
+
+    protected processExistFromUser(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
     }
 
     downloadCv(idStudent: string, cancelToken?: CancelToken | undefined): Promise<StreamableFile> {
@@ -1120,61 +1229,6 @@ export class InterestControllerClient {
         return Promise.resolve<GetInterestDto[]>(null as any);
     }
 
-    findOne(id: string, cancelToken?: CancelToken | undefined): Promise<GetInterestDto> {
-        let url_ = this.baseUrl + "/interest/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processFindOne(_response);
-        });
-    }
-
-    protected processFindOne(response: AxiosResponse): Promise<GetInterestDto> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = GetInterestDto.fromJS(resultData200);
-            return Promise.resolve<GetInterestDto>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            return throwException("A server side error occurred.", status, _responseText, _headers);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<GetInterestDto>(null as any);
-    }
-
     addInterestToAccount(body: AddInterestDto, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/interest/account";
         url_ = url_.replace(/[?&]$/, "");
@@ -1225,6 +1279,65 @@ export class InterestControllerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    getInterestFromAccount( cancelToken?: CancelToken | undefined): Promise<GetInterestDto[]> {
+        let url_ = this.baseUrl + "/interest/account";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetInterestFromAccount(_response);
+        });
+    }
+
+    protected processGetInterestFromAccount(response: AxiosResponse): Promise<GetInterestDto[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetInterestDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<GetInterestDto[]>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetInterestDto[]>(null as any);
     }
 
     deleteInterestOfAccount(body: AddInterestDto, cancelToken?: CancelToken | undefined): Promise<void> {
@@ -1381,6 +1494,61 @@ export class InterestControllerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    findInterest(id: string, cancelToken?: CancelToken | undefined): Promise<GetInterestDto> {
+        let url_ = this.baseUrl + "/interest/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processFindInterest(_response);
+        });
+    }
+
+    protected processFindInterest(response: AxiosResponse): Promise<GetInterestDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = GetInterestDto.fromJS(resultData200);
+            return Promise.resolve<GetInterestDto>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetInterestDto>(null as any);
     }
 }
 
@@ -1881,6 +2049,58 @@ export class CompanyControllerClient {
         return Promise.resolve<GetCompanyDto[]>(null as any);
     }
 
+    getOwnCompany( cancelToken?: CancelToken | undefined): Promise<GetCompanyDto> {
+        let url_ = this.baseUrl + "/company/idUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetOwnCompany(_response);
+        });
+    }
+
+    protected processGetOwnCompany(response: AxiosResponse): Promise<GetCompanyDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = GetCompanyDto.fromJS(resultData200);
+            return Promise.resolve<GetCompanyDto>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GetCompanyDto>(null as any);
+    }
+
     findOne(id: string, cancelToken?: CancelToken | undefined): Promise<GetCompanyDto> {
         let url_ = this.baseUrl + "/company/{id}";
         if (id === undefined || id === null)
@@ -2124,7 +2344,7 @@ export class CompanyTypeControllerClient {
         return Promise.resolve<void>(null as any);
     }
 
-    findAll( cancelToken?: CancelToken | undefined): Promise<GetPanelDto[]> {
+    findAll( cancelToken?: CancelToken | undefined): Promise<GetCompanyTypeDto[]> {
         let url_ = this.baseUrl + "/company-type";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2148,7 +2368,7 @@ export class CompanyTypeControllerClient {
         });
     }
 
-    protected processFindAll(response: AxiosResponse): Promise<GetPanelDto[]> {
+    protected processFindAll(response: AxiosResponse): Promise<GetCompanyTypeDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2165,12 +2385,12 @@ export class CompanyTypeControllerClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(GetPanelDto.fromJS(item));
+                    result200!.push(GetCompanyTypeDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<GetPanelDto[]>(result200);
+            return Promise.resolve<GetCompanyTypeDto[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2184,10 +2404,10 @@ export class CompanyTypeControllerClient {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GetPanelDto[]>(null as any);
+        return Promise.resolve<GetCompanyTypeDto[]>(null as any);
     }
 
-    findOne(id: string, cancelToken?: CancelToken | undefined): Promise<GetPanelDto> {
+    findOne(id: string, cancelToken?: CancelToken | undefined): Promise<GetCompanyTypeDto> {
         let url_ = this.baseUrl + "/company-type/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2214,7 +2434,7 @@ export class CompanyTypeControllerClient {
         });
     }
 
-    protected processFindOne(response: AxiosResponse): Promise<GetPanelDto> {
+    protected processFindOne(response: AxiosResponse): Promise<GetCompanyTypeDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2228,8 +2448,8 @@ export class CompanyTypeControllerClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = GetPanelDto.fromJS(resultData200);
-            return Promise.resolve<GetPanelDto>(result200);
+            result200 = GetCompanyTypeDto.fromJS(resultData200);
+            return Promise.resolve<GetCompanyTypeDto>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2243,7 +2463,7 @@ export class CompanyTypeControllerClient {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GetPanelDto>(null as any);
+        return Promise.resolve<GetCompanyTypeDto>(null as any);
     }
 
     update(id: string, body: UpdateCompanyTypeDto, cancelToken?: CancelToken | undefined): Promise<void> {
@@ -2789,6 +3009,70 @@ export interface IUpdateJobDTO {
     jobName: string;
     jobDescription: string;
     skillsNeeded: string;
+
+    [key: string]: any;
+}
+
+export class GetJobsDTO implements IGetJobsDTO {
+    jobId!: number;
+    jobName!: string;
+    jobDescription!: string;
+    skillsNeeded!: string;
+    applied!: boolean;
+
+    [key: string]: any;
+
+    constructor(data?: IGetJobsDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.jobId = _data["jobId"];
+            this.jobName = _data["jobName"];
+            this.jobDescription = _data["jobDescription"];
+            this.skillsNeeded = _data["skillsNeeded"];
+            this.applied = _data["applied"];
+        }
+    }
+
+    static fromJS(data: any): GetJobsDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetJobsDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["jobId"] = this.jobId;
+        data["jobName"] = this.jobName;
+        data["jobDescription"] = this.jobDescription;
+        data["skillsNeeded"] = this.skillsNeeded;
+        data["applied"] = this.applied;
+        return data;
+    }
+}
+
+export interface IGetJobsDTO {
+    jobId: number;
+    jobName: string;
+    jobDescription: string;
+    skillsNeeded: string;
+    applied: boolean;
 
     [key: string]: any;
 }
@@ -3390,10 +3674,12 @@ export interface ICreateCompanyDto {
 }
 
 export class GetCompanyDto implements IGetCompanyDto {
+    idCompany!: number;
     companyName!: string;
     description!: string;
     websiteLink!: string;
     lineOfBusiness!: string;
+    idTypeCompany!: number;
     companyTypeLabel!: string;
 
     [key: string]: any;
@@ -3413,10 +3699,12 @@ export class GetCompanyDto implements IGetCompanyDto {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
+            this.idCompany = _data["idCompany"];
             this.companyName = _data["companyName"];
             this.description = _data["description"];
             this.websiteLink = _data["websiteLink"];
             this.lineOfBusiness = _data["lineOfBusiness"];
+            this.idTypeCompany = _data["idTypeCompany"];
             this.companyTypeLabel = _data["companyTypeLabel"];
         }
     }
@@ -3434,20 +3722,24 @@ export class GetCompanyDto implements IGetCompanyDto {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
+        data["idCompany"] = this.idCompany;
         data["companyName"] = this.companyName;
         data["description"] = this.description;
         data["websiteLink"] = this.websiteLink;
         data["lineOfBusiness"] = this.lineOfBusiness;
+        data["idTypeCompany"] = this.idTypeCompany;
         data["companyTypeLabel"] = this.companyTypeLabel;
         return data;
     }
 }
 
 export interface IGetCompanyDto {
+    idCompany: number;
     companyName: string;
     description: string;
     websiteLink: string;
     lineOfBusiness: string;
+    idTypeCompany: number;
     companyTypeLabel: string;
 
     [key: string]: any;
@@ -3561,6 +3853,58 @@ export class CreateCompanyTypeDto implements ICreateCompanyTypeDto {
 
 export interface ICreateCompanyTypeDto {
     companyTypeLabel: string;
+
+    [key: string]: any;
+}
+
+export class GetCompanyTypeDto implements IGetCompanyTypeDto {
+    companyTypeLabel!: string;
+    idCompanyType!: number;
+
+    [key: string]: any;
+
+    constructor(data?: IGetCompanyTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.companyTypeLabel = _data["companyTypeLabel"];
+            this.idCompanyType = _data["idCompanyType"];
+        }
+    }
+
+    static fromJS(data: any): GetCompanyTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCompanyTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["companyTypeLabel"] = this.companyTypeLabel;
+        data["idCompanyType"] = this.idCompanyType;
+        return data;
+    }
+}
+
+export interface IGetCompanyTypeDto {
+    companyTypeLabel: string;
+    idCompanyType: number;
 
     [key: string]: any;
 }
