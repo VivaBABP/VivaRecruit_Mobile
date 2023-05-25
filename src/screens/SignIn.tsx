@@ -1,14 +1,13 @@
-import {ImageBackground, StyleSheet, View} from 'react-native'
-import {Text, Button, TextInput} from 'react-native-paper'
-import React, {useContext, useState} from 'react'
-import {Controller, useForm} from "react-hook-form";
-import Animated, {FadeInUp, FadeInDown} from "react-native-reanimated";
-import {CredentialDTO} from "../client/recruitBack";
-import {AuthService} from "../services/AuthService";
-import {AuthContext} from "../context/AuthContext";
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { Text, Button, TextInput } from 'react-native-paper'
+import React, { useContext, useState } from 'react'
+import { Controller, useForm } from "react-hook-form";
+import { CredentialDTO } from "../client/recruitBack";
+import { AuthService } from "../services/AuthService";
+import { AuthContext } from "../context/AuthContext";
 
 // @ts-ignore
-export default function SignIn({navigation}) {
+export default function SignIn({ navigation }) {
     const {
         control,
         handleSubmit,
@@ -28,37 +27,15 @@ export default function SignIn({navigation}) {
         })
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 2,
-            flexDirection: 'column',
-            gap: 40,
-            alignItems: 'center',
-        },
-        input: {},
-        connection: {
-            width: '70%'
-        },
-        image: {
-            flex: 1,
-            justifyContent: 'center'
-        },
-        rounded: {
-            width: '70%',
-            borderRadius: 25,
-            overflow: 'hidden',
-            borderStyle: 'solid',
-            borderColor: '#0000',
-        }
-    })
-
     return (
-        <ImageBackground style={styles.image} source={require('./../../assets/images/background-gradient-phone.png')}
-            resizeMode='cover'>
-            <View style={styles.container}>
-                <Text style={{fontFamily: '700'}}>Test Police</Text>
-                <Animated.Text entering={FadeInDown} exiting={FadeInUp}>Page de connexion</Animated.Text>
-                <View style={styles.rounded}>
+        <ScrollView style={styles.container}>
+            <View style={styles.align}>
+                {/* <Text style={{fontFamily: '700'}}>Test Police</Text> */}
+                <Image
+                    style={styles.image}
+                    source={require('./../../assets/logo/adaptive-icon_vivatech.png')}
+                />
+                <View style={styles.inputs}>
                     <Controller rules={{
                         required: true,
                         pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide' }
@@ -68,16 +45,17 @@ export default function SignIn({navigation}) {
                             <TextInput
                                 keyboardType={'email-address'}
                                 style={styles.input}
-                                placeholder="Adresse mail"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                                 autoComplete={'email'}
                                 inputMode={'email'}
+                                mode='outlined'
+                                placeholder="Adresse mail"
                             />
                         )} name="email" />
                 </View>
-                <View style={styles.rounded}>
+                <View style={styles.inputs}>
                     <Controller rules={{ required: true }}
                         name="password"
                         control={control}
@@ -88,15 +66,54 @@ export default function SignIn({navigation}) {
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                secureTextEntry={true} />
+                                secureTextEntry={true}
+                                mode='outlined' />
                         )} />
                 </View>
                 {(errors.password || errors.email) ? <Text>Champs obligatoires invalide</Text> : <Text>{error}</Text>}
-                <Button style={styles.connection} onPress={handleSubmit(onSubmit)} mode='contained'>Se
-                    connecter</Button>
-                <Button style={styles.connection} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire
+                <View style={styles.connection}>
+                    <Button style={styles.button} onPress={handleSubmit(onSubmit)} mode='contained'>Se
+                        connecter</Button>
+                    <Button style={styles.button} onPress={() => navigation.navigate("SignUp")} mode='contained'>S'inscrire
                     </Button>
+                </View>
             </View>
-        </ImageBackground>
+        </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 2,
+        flexDirection: 'column',
+    },
+    input: {
+        marginBottom: 30,
+        display: 'flex',
+        alignItems: 'flex-start',
+        padding: 0,
+    },
+    connection: {
+        width: '70%',
+        marginBottom: 50
+    },
+    image: {
+        flex: 1,
+        width: 250,
+        height: 200,
+        marginTop: 50
+    },
+    inputs: {
+        width: '60%',
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
+    },
+    button: {
+        marginBottom: 30,
+    backgroundColor: '#EC4D0C'
+    },
+    align: {
+        alignItems: 'center'
+    }
+})
