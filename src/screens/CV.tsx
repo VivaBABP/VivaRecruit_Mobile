@@ -1,17 +1,38 @@
 import { Text, Button } from 'react-native-paper'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker'
 import { DocumentResult } from "expo-document-picker";
 import { View } from "react-native";
 import CvService from '../services/CvService';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
 import { cacheDirectory, copyAsync, getInfoAsync, makeDirectoryAsync, uploadAsync } from 'expo-file-system'
 
 // @ts-ignore
 export default function CV() {
 
+    const [Message, setMessage] = useState("")
+
     const cvService = new CvService;
+
+    useEffect(() => {
+      verifyPdf();
+    }, [])
+    
+
+    const verifyPdf = (): void => {
+        cvService.ifExist()
+        .then((e) => {
+            if (e) {
+                setMessage("CV uploadé")
+            }
+            else {
+                setMessage("Aucun CV uploadé")
+            }
+        })
+        .catch((e) => {
+            console.log(JSON.stringify(e))
+        })
+    }
 
     async function pickDocument() {
 
@@ -32,8 +53,8 @@ export default function CV() {
             if (result.type !== "cancel") {
                 const file = await createCacheFile(result.uri, result.name);                
                 const res = await cvService.uploadCv(file);
-                console.log(JSON.stringify(res.body));
                 alert(res.body);
+                verifyPdf();
             } else {
                 console.log("Cancel")
             }
@@ -52,9 +73,16 @@ export default function CV() {
     }
 
     return (
-        <View>
-            <Text>Upload du CV</Text>
-            <Button onPress={pickDocument}>Upload</Button>
+        <View style={style.container}>
+            <Text style={{ textAlign: 'center', fontFamily: '500', fontSize: 30 }}> {Message} </Text>
+            <Button style={{margin: '30%', backgroundColor: '#EC4D0C'}} mode='contained' onPress={pickDocument}>Upload</Button>
         </View>
     )
 }
+
+const style = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    }
+})

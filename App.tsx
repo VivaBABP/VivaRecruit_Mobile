@@ -12,8 +12,12 @@ import AppNavigatorRecruit from './src/navigations/AppNavigator/AppNavigatorRecr
 import { AppNavigatorNotRecruit } from './src/navigations/AppNavigator/AppNavigatorNotRecruit';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import * as SystemUI from 'expo-system-ui';
+
 
 export default function App() {
+
+    SystemUI.setBackgroundColorAsync("white");
 
     SplashScreen.preventAutoHideAsync();
 
