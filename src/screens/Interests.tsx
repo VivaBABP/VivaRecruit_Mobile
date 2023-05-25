@@ -1,146 +1,173 @@
-import { ImageBackground, StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from 'react-native'
-import { Text, Button, TextInput } from 'react-native-paper'
-import React, { useContext, useEffect, useState } from 'react'
-import { Controller, useForm } from "react-hook-form";
-import Animated, { FadeInUp, FadeInDown, Value } from "react-native-reanimated";
-import { AddInterestDto, CredentialDTO, GetInterestDto } from "../client/recruitBack";
-import { AuthService } from "../services/AuthService";
-import { AuthContext } from "../context/AuthContext";
-import { Item } from 'react-native-paper/lib/typescript/src/components/Drawer/Drawer';
-import { blue100 } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import { StyleSheet, ScrollView, View, Button } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { AddInterestDto, GetInterestDto } from "../client/recruitBack";
 import { InteretsService } from '../services/InterestsService';
 import { InterestInterface } from '../interfaces/InterestInterface';
-import { err } from 'react-native-svg/lib/typescript/xml';
+import DropDownPicker, { ValueType } from 'react-native-dropdown-picker';
+import { ItemType } from 'react-native-dropdown-picker';
 
 // @ts-ignore
 export default function Interests({ navigation }) {
 
-    const [selected, setSelected] = useState("");
-    const [data, setData] = useState<InterestInterface[]>([]);
+    const [open, setOpen] = useState(true);
+    const [value, setValue] = useState<string[]>([]);
+    const [valueDb, setvalueDb] = useState<string[]>([])
+    const [items, setItems] = useState<ItemType<ValueType>[]>([]);
 
     const interestsService = new InteretsService
 
 
-   
-
     useEffect(() => {
         findAll();
-        // getInteretsUser();
+        getInterestUser();
     }, []);
 
 
     const findAll = () => {
         interestsService.findall()
             .then((response) => {
-                const interest: InterestInterface[] = [];
+                const interest: ItemType<ValueType>[] = [];
                 response.forEach(e => {
-                    const result: InterestInterface = {
-                        key: e.idInterest.toString(),
-                        value: e.labelInterest
+                    const result: ItemType<ValueType> = {
+                        label: e.labelInterest,
+                        value: e.idInterest.toString()
                     }
                     interest.push(result);
                 });
-                setData(interest);
+                setItems(interest);
             })
             .catch((e) => {
                 console.log(JSON.stringify(e))
             })
     }
-    // const test = GetInterestDto[];
-    // const getInteretsUser = () => {
-    //   test = interestsService.getInterestFromAccount()
-        
-    // }
 
-
-    const dbStuff = () => {
-        const ISelect = Array.from(selected)
-        console.log(ISelect);
-        ISelect.forEach(selected => interestsService.addInterestToAccount({ id: +selected } as AddInterestDto)
-            .then((selected) => {
-                console.log("Marche");
-            })
-            .catch((err) => {
-                console.log(JSON.stringify(err));
-
-            })
-        );
-
-
+    const getInterestUser = () => {
+        interestsService.getInterestFromAccount()
+        .then((data) => {
+            const val: string[] = [];
+            const db: string[] = [];
+            data.forEach(d => {
+                val.push(d.idInterest.toString());
+                db.push(d.idInterest.toString());
+            });        
+            setValue(val);
+            setvalueDb(db);
+        })
+        .catch((e) => {
+            console.log(JSON.stringify(e));
+        })
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 2,
-            flexDirection: 'column',
-            fontFamily: '700'
-        },
-        input: {
-            marginBottom: 30,
-            display: 'flex',
-            alignItems: 'flex-start',
-            padding: 0,
-            fontFamily: '700'
-        },
-        connection: {
-            width: '70%',
-            marginBottom: 50
-        },
-        image: {
-            flex: 1,
-            width: 250,
-            height: 200,
-            marginTop: 50
-        },
-        inputs: {
-            width: '60%',
-            overflow: 'hidden',
-            borderStyle: 'solid',
-            borderColor: '#0000',
-        },
-        button: {
-            marginBottom: 30,
-            backgroundColor: '#EC4D0C',
-            fontFamily: '700'
-        },
-        checkboxContainer: {
-            marginBottom: 30,
-            flexDirection: 'row',
-        },
-        checkbox: {
-            alignSelf: 'center',
-        },
-        align: {
-            alignItems: 'center'
-        }
-    })
+    const dbStuff = () => {
+        console.log('value', value);
+        console.log('db', valueDb);
+        
+        const missingValues = valueDb.filter(v => !value.includes(v));
+        const additionalValues = value.filter(v => !valueDb.includes(v));
 
+        missingValues.forEach(m => {
+            deleteValue(+m)
+        });
+        additionalValues.forEach(a => {
+            addValue(+a)
+        })
+    }
 
+    const addValue = (id: number) => {
+        const send = new AddInterestDto({
+            id: id
+        })
+        interestsService.addInterestToAccount(send)
+        .then(() => {
+            const v = value;
+            const vdb = valueDb;
+            v.push(id.toString());
+            vdb.push(id.toString());
+            setValue(v);
+            setvalueDb(v);
+        })
+        .catch((e) => {
+            console.log(JSON.stringify(e));
+        })
+    }
 
-   
+    const deleteValue = (id: number) => {
+        const send = new AddInterestDto({
+            id: id
+        })
+        interestsService.deleteInterestToAccount(send)
+        .then(() => {
+            const filteredArray = value.filter(v => v !== id.toString());
+            setValue(filteredArray);
+            setvalueDb(filteredArray);
+        })
+        .catch((e) => {
+            console.log(JSON.stringify(e));
+        })
+    }
+
 
     return (
-        <ScrollView style={styles.container}>
-        <View style={{ paddingHorizontal: 20, paddingVertical: 50, flex: 1 }}>
-            <MultipleSelectList
-                setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
-                data={data}
-                search={false}
-                save="key"
-                label="intérêts"
-                placeholder='sélectionner vos intérêts'
-                boxStyles={{ backgroundColor: '#EC4D0C', borderColor: 'black' }}
-                inputStyles={{ color: 'white' }}
-                dropdownStyles={{ backgroundColor: '#EC4D0C', borderColor: 'black' }}
-                dropdownTextStyles={{ color: 'white' }}
+        <View>
+            <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={() => setOpen(true)}
+                setValue={setValue}
+                setItems={setItems}
+                multiple={true}
+                mode="BADGE"
+                onChangeValue={() => dbStuff()}
+                placeholder="sélectionner vos intérêts"
             />
-        
-            <Button onPress={dbStuff}>Valider</Button>
         </View>
-        </ScrollView>
 
     )
 }
 
-
+const styles = StyleSheet.create({
+    container: {
+        flex: 2,
+        flexDirection: 'column',
+        fontFamily: '700'
+    },
+    input: {
+        marginBottom: 30,
+        display: 'flex',
+        alignItems: 'flex-start',
+        padding: 0,
+        fontFamily: '700'
+    },
+    connection: {
+        width: '70%',
+        marginBottom: 50
+    },
+    image: {
+        flex: 1,
+        width: 250,
+        height: 200,
+        marginTop: 50
+    },
+    inputs: {
+        width: '60%',
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
+    },
+    button: {
+        marginBottom: 30,
+        backgroundColor: '#EC4D0C',
+        fontFamily: '700'
+    },
+    checkboxContainer: {
+        marginBottom: 30,
+        flexDirection: 'row',
+    },
+    checkbox: {
+        alignSelf: 'center',
+    },
+    align: {
+        alignItems: 'center'
+    }
+})

@@ -17,5 +17,9 @@ export class InteretsService {
 
     getInterestFromAccount(): Promise<GetInterestDto[]> {
         return this.interests.getInterestFromAccount();
-    } 
+    }
+    
+    deleteInterestToAccount(AddInterestDTO: AddInterestDto): Promise<void> {
+        return this.interests.deleteInterestOfAccount(AddInterestDTO);
+    }
 }
