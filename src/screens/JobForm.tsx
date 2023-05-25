@@ -5,6 +5,7 @@ import Constants from 'expo-constants'
 import { Button, TextInput } from 'react-native-paper'
 import { CreateJobDTO } from '../client/recruitBack'
 import { JobService } from '../services/JobService'
+import { color } from 'react-native-reanimated'
 
 export default function JobForm() {
 
@@ -25,69 +26,63 @@ export default function JobForm() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.label}>Intitulé du poste:</Text>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="jobName"
-        rules={{ required: true }}
-      />
-      <Text style={styles.label}>Description du poste:</Text>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-            multiline
-          />
-        )}
-        name="jobDescription"
-        rules={{ required: true }}
-      />
+      <View style={styles.align}>
+        <Text style={styles.label}>Intitulé du poste:</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+              mode='outlined'
+            />
+          )}
+          name="jobName"
+          rules={{ required: true }}
+        />
+        <Text style={styles.label}>Description du poste:</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.inputDescription}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+              multiline
+              mode='outlined'
+            />
+          )}
+          name="jobDescription"
+          rules={{ required: true }}
+        />
 
-      <Text style={styles.label}>Compétences voulues:</Text>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-            multiline
-          />
-        )}
-        name="skillsNeeded"
-      />
+        <Text style={styles.label}>Compétences voulues:</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
 
-      <View style={styles.button}>
-        <Button
-          onPress={() => {
-            reset({
-              jobDescription: '',
-              skillsNeeded: '',
-              jobName: ''
-            })
-          }}
-        >
-          Reset
-        </Button>
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+              multiline
+              mode='outlined'
+            />
+          )}
+          name="skillsNeeded"
+        />
 
-        <Button
-          onPress={handleSubmit(onSubmit)}
-        >
-          Valider
-        </Button>
+        <View style={styles.connection}>
+          <Button style={styles.button}
+            onPress={handleSubmit(onSubmit)}
+            mode='contained'>
+            Valider
+          </Button>
+        </View>
       </View>
     </ScrollView>
   )
@@ -95,29 +90,44 @@ export default function JobForm() {
 
 const styles = StyleSheet.create({
   label: {
+    fontFamily: '700',
+    alignSelf: 'center',
     color: '#000000',
     margin: 20,
     marginLeft: 0,
   },
+  connection: {
+    width: '70%',
+    marginBottom: 50
+  },
   button: {
-    marginTop: 20,
-    marginBottom: 70,
-    color: 'white',
-    height: 40,
-    backgroundColor: 'White',
-    borderRadius: 4,
+    marginTop: 40,
+    backgroundColor: '#EC4D0C',
+    fontFamily: '700'
+    // text: 'white'
+
   },
   container: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
-    padding: 8,
-    backgroundColor: 'White',
+    flex: 2,
+    flexDirection: 'column',
+    fontFamily: '700'
   },
   input: {
-    backgroundColor: 'white',
-    borderColor: '#000000',
-    borderBottomWidth: 2,
-    padding: 10,
-    borderRadius: 4,
+    width: '60%',
+    // height: 60,
+    overflow: 'hidden',
+    borderStyle: 'solid',
+    borderColor: '#0000',
   },
+  align: {
+    alignItems: 'center'
+  },
+  inputDescription : {
+    width: '60%',
+    height: 100,
+    overflow: 'hidden',
+    borderStyle: 'solid',
+    borderColor: '#0000',
+
+  }
 });

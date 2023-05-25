@@ -1,19 +1,28 @@
-import { View, FlatList } from 'react-native'
+import { View, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { JobService } from '../services/JobService'
-import { Card, Text } from 'react-native-paper'
+import { Card, Divider, Text } from 'react-native-paper'
 import { CreateJobDTO } from '../client/recruitBack'
 
 export default function ApplyJob() {
-  // const jobService = new JobService
+  const jobService = new JobService
 
-  // const [Jobs, setJobs] = useState<CreateJobDTO[]>([])
+  const [Jobs, setJobs] = useState<CreateJobDTO[]>([])
 
-  // useEffect(() => {
-  //   getJobs();
-  // }, [])
+  useEffect(() => {
+    getJobs();
+  }, [])
 
 
+  const getJobs = async () => {
+    jobService.getJobs()
+      .then((data) => {
+        setJobs(data);
+      })
+      .catch((e) => {
+        alert(e.response.message)
+      })
+  }
   // const getJobs = async () => {
   //   jobService.getAppliedJobs()
   //     .then((data) => {
@@ -24,22 +33,23 @@ export default function ApplyJob() {
   //     })
   // }
 
-  // return (
-  //   <View>
-  //     <FlatList
-  //       data={Jobs}
-  //       renderItem={({ item, index }) => (
-  //         <Card style={{ margin: 13 }} key={index}>
-  //           <Card.Content>
-  //             <Text variant="titleLarge"> {item.jobName} </Text>
-  //             <Text variant="bodyMedium"> {item.jobDescription} </Text>
-  //             <Text variant='bodySmall'> {item.skillsNeeded} </Text>
-  //           </Card.Content>
-  //         </Card>
-  //       )}
-  //     />
-  //   </View>
-  // )
+  return (
+    <View>
+      <FlatList
+        data={Jobs}
+        renderItem={({ item, index }) => (
+          <Card style={styles.card} key={index}>
+            <Card.Content>
+              <Text style={styles.text} variant="titleLarge">Poste: {item.jobName} </Text>
+              <Divider />
+              <Text style={styles.text} variant="bodyMedium">Description: {item.jobDescription} </Text>
+              <Text style={styles.text} variant='bodySmall'>Compétence: {item.skillsNeeded} </Text>
+            </Card.Content>
+          </Card>
+        )}
+      />
+    </View>
+  )
 
   return (
     <View>
@@ -47,3 +57,15 @@ export default function ApplyJob() {
     </View>
   )
 }
+const styles = StyleSheet.create({
+  card: {
+    margin: 13,
+    backgroundColor: '#EC4D0C',
+    borderWidth: 1,
+   borderColor: 'white'
+  },
+  text:{
+    fontFamily: '700',
+    color: 'white',
+  }
+})

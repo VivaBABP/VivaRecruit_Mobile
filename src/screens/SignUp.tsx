@@ -51,7 +51,7 @@ export default function SignUp({ navigation }) {
                                 inputMode={'email'}
                                 mode='outlined'
                                 placeholder="Adresse mail"
-                                
+
                             />
                         )}
                         name='email'
@@ -81,7 +81,7 @@ export default function SignUp({ navigation }) {
                             setChecked(!checked);
                         }}
                     />
-                    <Text style={{fontFamily: '700', alignSelf: 'center'}}>Je suis un recruteur</Text>
+                    <Text style={{ fontFamily: '700', alignSelf: 'center' }}>Je suis un recruteur</Text>
                 </View>
                 {(errors.password || errors.email) && <Text>Champs obligatoires invalide</Text>}
                 <View style={styles.connection}>

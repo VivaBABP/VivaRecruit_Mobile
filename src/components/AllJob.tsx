@@ -1,6 +1,6 @@
-import { View, FlatList } from 'react-native'
+import { View, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Card, Text } from 'react-native-paper'
+import { Card, Divider, Text } from 'react-native-paper'
 import { JobService } from '../services/JobService'
 import { UpdateJobDTO } from '../client/recruitBack'
 
@@ -30,11 +30,13 @@ export default function AllJob() {
       <FlatList
         data={Jobs}
         renderItem={({ item, index }) => (
-          <Card style={{ margin: 13 }} key={index}>
+          <Card style={styles.card} key={index}>
             <Card.Content>
-              <Text variant="titleLarge"> {item.jobName} </Text>
-              <Text variant="bodyMedium"> {item.jobDescription} </Text>
-              <Text variant='bodySmall'> {item.skillsNeeded} </Text>
+              <Text style={styles.text} variant="titleLarge">Poste: {item.jobName} </Text>
+              <Divider />
+              <Text style={styles.text} variant="bodyMedium">Description: {item.jobDescription} </Text>
+              
+              <Text style={styles.text} variant='bodySmall'>Compétence: {item.skillsNeeded} </Text>
             </Card.Content>
           </Card>
         )}
@@ -42,3 +44,17 @@ export default function AllJob() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  card: {
+    margin: 13,
+    backgroundColor: '#EC4D0C',
+    borderWidth: 1,
+   borderColor: 'white'
+  },
+  text:{
+    fontFamily: '700',
+    color: 'white',
+  }
+})
+  
