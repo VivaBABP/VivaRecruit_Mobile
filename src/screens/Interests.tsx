@@ -1,8 +1,7 @@
-import { StyleSheet, ScrollView, View, Button } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { AddInterestDto, GetInterestDto } from "../client/recruitBack";
+import { AddInterestDto } from "../client/recruitBack";
 import { InteretsService } from '../services/InterestsService';
-import { InterestInterface } from '../interfaces/InterestInterface';
 import DropDownPicker, { ValueType } from 'react-native-dropdown-picker';
 import { ItemType } from 'react-native-dropdown-picker';
 
@@ -59,9 +58,6 @@ export default function Interests({ navigation }) {
     }
 
     const dbStuff = () => {
-        console.log('value', value);
-        console.log('db', valueDb);
-        
         const missingValues = valueDb.filter(v => !value.includes(v));
         const additionalValues = value.filter(v => !valueDb.includes(v));
 
@@ -108,7 +104,7 @@ export default function Interests({ navigation }) {
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <DropDownPicker
                 open={open}
                 value={value}
@@ -120,6 +116,8 @@ export default function Interests({ navigation }) {
                 mode="BADGE"
                 onChangeValue={() => dbStuff()}
                 placeholder="sélectionner vos intérêts"
+                containerStyle={styles.dropdownContainer}
+                style={styles.dropdown}
             />
         </View>
 
@@ -128,46 +126,14 @@ export default function Interests({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 2,
-        flexDirection: 'column',
-        fontFamily: '700'
+      flex: 1,
+      marginTop: '50%',
+      alignItems: 'center',
     },
-    input: {
-        marginBottom: 30,
-        display: 'flex',
-        alignItems: 'flex-start',
-        padding: 0,
-        fontFamily: '700'
+    dropdownContainer: {
+      width: '90%',
     },
-    connection: {
-        width: '70%',
-        marginBottom: 50
+    dropdown: {
+      backgroundColor: '#fafafa',
     },
-    image: {
-        flex: 1,
-        width: 250,
-        height: 200,
-        marginTop: 50
-    },
-    inputs: {
-        width: '60%',
-        overflow: 'hidden',
-        borderStyle: 'solid',
-        borderColor: '#0000',
-    },
-    button: {
-        marginBottom: 30,
-        backgroundColor: '#EC4D0C',
-        fontFamily: '700'
-    },
-    checkboxContainer: {
-        marginBottom: 30,
-        flexDirection: 'row',
-    },
-    checkbox: {
-        alignSelf: 'center',
-    },
-    align: {
-        alignItems: 'center'
-    }
-})
+  });
