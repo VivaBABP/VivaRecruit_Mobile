@@ -50,36 +50,6 @@ export default function ContactForm() {
         await accountService.updateInfoUser(data);
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            paddingTop: Constants.statusBarHeight,
-            padding: 8,
-            backgroundColor: 'White',
-        },
-        label: {
-            color: '#000000',
-            margin: 20,
-            marginLeft: 0,
-        },
-        button: {
-            marginTop: 20,
-            marginBottom: 70,
-            color: 'white',
-            height: 40,
-            backgroundColor: 'White',
-            borderRadius: 4,
-        },
-        input: {
-            backgroundColor: 'white',
-            borderColor: '#000000',
-            borderBottomWidth: 2,
-            height: 40,
-            padding: 10,
-            borderRadius: 4,
-        },
-    })
-
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.label}>Numéro de téléphone</Text>
@@ -177,3 +147,30 @@ export default function ContactForm() {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+        padding: 8,
+        backgroundColor: 'White',
+    },
+    label: {
+        color: '#000000',
+        margin: 20,
+        marginLeft: 0,
+    },
+    button: {
+        marginBottom: 30,
+        backgroundColor: '#EC4D0C',
+        fontFamily: '700'
+    },
+    input: {
+        backgroundColor: 'white',
+        borderColor: '#000000',
+        borderBottomWidth: 2,
+        height: 40,
+        padding: 10,
+        borderRadius: 4,
+    },
+})
