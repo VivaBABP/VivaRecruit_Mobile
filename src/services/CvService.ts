@@ -6,6 +6,8 @@ import axios from "axios";
 import * as FileSystem from 'expo-file-system';
 
 export default class CvService {
+
+  private cvClient = new CvControllerClient(URL, axiosApiInstance)
   
   async getCv(id: number): Promise<string> {
     const filePath = `${FileSystem.documentDirectory}${id}.pdf`;
@@ -33,6 +35,9 @@ export default class CvService {
         'Authorization': `Bearer ${token}`,
       },
     });
+  }
 
+  ifExist(): Promise<Boolean> {
+    return this.cvClient.exist();
   }
 }
