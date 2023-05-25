@@ -7,12 +7,6 @@ import { AuthContext } from "../../context/AuthContext";
 
 export default function SeeStands() {
 
-    const {disconnect} = useContext(AuthContext);
-
-    const logOut = async () => {
-        await disconnect()
-    };
-
     const panelService = new PanelService;
 
     const [panels, setPanels] = useState<GetPanelDto[]>([])
@@ -44,7 +38,6 @@ export default function SeeStands() {
                 )}
             />
             {panels.length == 0 && <Text>Aucun stand trouvé</Text>}
-            <Button onPress={logOut}>Se déconnecter</Button>
         </View>
     )
 }
