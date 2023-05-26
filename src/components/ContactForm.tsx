@@ -1,18 +1,18 @@
-import {ScrollView, Text, View, StyleSheet} from "react-native";
-import {Controller, useForm} from "react-hook-form";
-import {Button, TextInput} from "react-native-paper";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { Controller, useForm } from "react-hook-form";
+import { Button, TextInput } from "react-native-paper";
 import React from "react";
-import {createTableInfoUser, getInfoUsers, insertInfoUser, updateInfoUser} from "../services/Database";
+import { createTableInfoUser, getInfoUsers, insertInfoUser, updateInfoUser } from "../services/Database";
 import Constants from "expo-constants";
-import {AccountsService} from "../services/AccountsService";
-import {InformationUserDTO} from "../client/recruitBack";
-import {useFocusEffect} from "@react-navigation/native";
+import { AccountsService } from "../services/AccountsService";
+import { InformationUserDTO } from "../client/recruitBack";
+import { useFocusEffect } from "@react-navigation/native";
 
 // Ce formulaire est le formulaire de mise à jour de donnée de contact seulement pour les candidats. 
 // La ligne sera créée lors de la création du compte avec le mail uniquement.
 
 export default function ContactForm() {
-    const {register, setValue, handleSubmit, control, reset, formState: {errors}} = useForm<InformationUserDTO>();
+    const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<InformationUserDTO>();
 
     const accountService = new AccountsService;
 
@@ -20,8 +20,8 @@ export default function ContactForm() {
 
     useFocusEffect(() => {
         createTableInfoUser()
-        getInfoUsers().then((res) =>{
-            if(res.rows.length > 0) {
+        getInfoUsers().then((res) => {
+            if (res.rows.length > 0) {
                 const user = res.rows.item(0) as InformationUserDTO;
                 console.log(user);
                 setValue('nom', user.nom);
@@ -30,7 +30,7 @@ export default function ContactForm() {
                 setValue('phoneNumber', user.phoneNumber);
                 setValue('lastDiploma', user.lastDiploma);
             }
-            res.rows.length > 0 ? infos = true: infos= false;
+            res.rows.length > 0 ? infos = true : infos = false;
             console.log(res.rows.length);
         }).catch((error) => {
             console.log(error.message, " erreurs");
@@ -38,7 +38,7 @@ export default function ContactForm() {
     })
 
     const save = async (data: InformationUserDTO) => {
-        if(infos) {
+        if (infos) {
             updateInfoUser(data).then((res) => {
                 console.log(res);
             }).catch((error) => {
@@ -55,7 +55,7 @@ export default function ContactForm() {
             <Text style={styles.label}>Numéro de téléphone</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -66,13 +66,13 @@ export default function ContactForm() {
                     />
                 )}
                 name="phoneNumber"
-                rules={{required: true,pattern:{value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, message:'Format de téléphone invalide' }}}
+                rules={{ required: true, pattern: { value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, message: 'Format de téléphone invalide' } }}
             />
             {errors.phoneNumber && <Text>Numéro de téléphone incorrect</Text>}
             <Text style={styles.label}>Mail</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -82,13 +82,13 @@ export default function ContactForm() {
                     />
                 )}
                 name="mail"
-                rules={{required: true, pattern:{value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide'}}}
+                rules={{ required: true, pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, message: 'Email invalide' } }}
             />
             {errors.mail && <Text>Mail incorrect</Text>}
             <Text style={styles.label}>Nom</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -97,12 +97,12 @@ export default function ContactForm() {
                     />
                 )}
                 name="nom"
-                rules={{required: true}}
+                rules={{ required: true }}
             />
             <Text style={styles.label}>Prenom</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -111,12 +111,12 @@ export default function ContactForm() {
                     />
                 )}
                 name="prenom"
-                rules={{required: true}}
+                rules={{ required: true }}
             />
             <Text style={styles.label}>Dernier diplôme obtenu</Text>
             <Controller
                 control={control}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         style={styles.input}
                         onBlur={onBlur}
@@ -125,52 +125,70 @@ export default function ContactForm() {
                     />
                 )}
                 name="lastDiploma"
-                rules={{required: true}}
+                rules={{ required: true }}
             />
             <View style={styles.button}>
-                <Button
-                    onPress={() => {
-                        reset({
-                            phoneNumber: '',
-                            mail: '',
-                            nom: '',
-                            prenom: '',
-                            lastDiploma:''
-                        })
-                    }}
-                >Reset</Button>
 
                 <Button
+                    style={{
+                        backgroundColor: '#EC4D0C'
+                    }}
+                    mode="contained"
                     onPress={handleSubmit(save)}
-                >Valider</Button>
+                >Valider
+                </Button>
             </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: Constants.statusBarHeight,
-        padding: 8,
-        backgroundColor: 'White',
-    },
     label: {
+        fontFamily: '700',
+        alignSelf: 'center',
         color: '#000000',
         margin: 20,
         marginLeft: 0,
     },
+    createCompany: {
+        fontFamily: '700',
+        alignSelf: 'center',
+        color: '#000000',
+        margin: 20,
+        marginLeft: '25%',
+    },
+    connection: {
+        width: '70%',
+        marginBottom: 50
+    },
     button: {
-        marginBottom: 30,
-        backgroundColor: '#EC4D0C',
+        margin: 30,
+        // backgroundColor: '#EC4D0C',
+        fontFamily: '700'
+
+    },
+    container: {
+        flex: 1,
         fontFamily: '700'
     },
     input: {
-        backgroundColor: 'white',
-        borderColor: '#000000',
-        borderBottomWidth: 2,
-        height: 40,
-        padding: 10,
-        borderRadius: 4,
+        // width: '60%',
+        marginRight: '10%',
+        marginLeft: '10%',
+        // height: 60,
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
     },
-})
+    align: {
+        alignItems: 'center'
+    },
+    inputDescription: {
+        width: '60%',
+        height: 100,
+        overflow: 'hidden',
+        borderStyle: 'solid',
+        borderColor: '#0000',
+
+    }
+});
